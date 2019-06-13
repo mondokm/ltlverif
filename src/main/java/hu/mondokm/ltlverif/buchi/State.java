@@ -26,10 +26,11 @@ public class State {
     private HashMap<Expr<BoolType>,State> transitions=new HashMap<Expr<BoolType>,State>();
 
     public State nextState(Valuation valuation){
+        State next=this;
         for(Expr<BoolType> cond:transitions.keySet()){
-            if(((BoolLitExpr) cond.eval(valuation)).getValue()) return transitions.get(cond);
+            if(((BoolLitExpr) cond.eval(valuation)).getValue()) next=transitions.get(cond);
         }
-        return this;
+        return next;
     }
 
 }

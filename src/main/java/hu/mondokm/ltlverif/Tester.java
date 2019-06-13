@@ -27,30 +27,30 @@ public class Tester {
     private CFA cfa;
     private BuchiAutomaton automaton;
     private MutableValuation vars=new MutableValuation();
-    public Tester(CFA cfa){
+    public Tester(CFA cfa, BuchiAutomaton automaton){
         this.cfa=cfa;
-        automaton=new BuchiAutomaton();
+        this.automaton=automaton;
 
 
         //FG(x==5)
-        State state0=new State();
-        state0.setAccepting(false);
-
-        State state1=new State();
-        state1.setAccepting(true);
-
-        State state2=new State();
-        state2.setAccepting(false);
-
-        Expr<BoolType> B=Eq(Int(5),((VarDecl<IntType>)cfa.getVars().toArray()[0]).getRef());
-
-        state0.addTransition(Not(B),state0);
-        state0.addTransition(B,state1);
-        state1.addTransition(Not(B),state2);
-        state1.addTransition(B,state1);
-        state2.addTransition(True(),state2);
-
-        automaton.setInitial(state0);
+//        State state0=new State();
+//        state0.setAccepting(false);
+//
+//        State state1=new State();
+//        state1.setAccepting(true);
+//
+//        State state2=new State();
+//        state2.setAccepting(false);
+//
+//        Expr<BoolType> B=Eq(Int(5),((VarDecl<IntType>)cfa.getVars().toArray()[0]).getRef());
+//
+//        state0.addTransition(Not(B),state0);
+//        state0.addTransition(B,state1);
+//        state1.addTransition(Not(B),state2);
+//        state1.addTransition(B,state1);
+//        state2.addTransition(True(),state2);
+//
+//        automaton.setInitial(state0);
 
     }
     public void test(){

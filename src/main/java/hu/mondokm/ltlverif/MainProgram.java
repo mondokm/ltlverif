@@ -5,18 +5,28 @@ import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
 import hu.bme.mit.theta.core.decl.VarDecl;
 import hu.bme.mit.theta.core.stmt.*;
 import hu.bme.mit.theta.core.type.Type;
+import hu.bme.mit.theta.core.type.inttype.IntType;
+import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
+import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Eq;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
+
 public class MainProgram {
 
     public static void main(String[] args){
         try {
-            final InputStream inputStream = new FileInputStream("src/main/resources/counter5_true.cfa");
-            final CFA cfa = CfaDslManager.createCfa(inputStream);
-            Tester tester=new Tester(cfa);
+            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
+            CFA cfa = CfaDslManager.createCfa(inputStream);
+            AutomatonBuilder builder=new AutomatonBuilder();
+            builder.addAp(0,Eq(Int(5),((VarDecl<IntType>)cfa.getVars().toArray()[0]).getRef()));
+            BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/fgb.hoa");
+            Tester tester=new Tester(cfa,automaton);
             tester.test();
         } catch (Exception e) {
             e.printStackTrace();
