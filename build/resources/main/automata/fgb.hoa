@@ -5,7 +5,7 @@ Start: 0
 AP: 1 "b"
 acc-name: Buchi
 Acceptance: 1 Inf(0)
-properties: trans-labels explicit-labels state-acc complete
+properties: trans-labels explicit-labels buchiState-acc complete
 properties: stutter-invariant very-weak
 --BODY--
 State: 0

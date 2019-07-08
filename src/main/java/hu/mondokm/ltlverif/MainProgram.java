@@ -25,9 +25,9 @@ public class MainProgram {
             CFA cfa = CfaDslManager.createCfa(inputStream);
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.addAp(0,Eq(Int(5),((VarDecl<IntType>)cfa.getVars().toArray()[0]).getRef()));
-            BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/fgb.hoa");
-            Tester tester=new Tester(cfa,automaton);
-            tester.test();
+            BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
+            CegarTester tester=new CegarTester(cfa,automaton);
+            tester.testNDFS();
         } catch (Exception e) {
             e.printStackTrace();
         }

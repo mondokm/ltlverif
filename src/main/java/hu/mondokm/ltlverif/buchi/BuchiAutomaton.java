@@ -1,32 +1,40 @@
 package hu.mondokm.ltlverif.buchi;
 
+import java.util.HashSet;
+
 import hu.bme.mit.theta.core.model.Valuation;
 
 public class BuchiAutomaton {
 
-    public State getInitial() {
+    public BuchiState getInitial() {
         return initial;
     }
 
-    public void setInitial(State initial) {
+    public void setInitial(BuchiState initial) {
         this.initial = initial;
-        current=initial;
+        current.clear();
+        current.add(initial);
     }
 
-    private State initial;
+    private BuchiState initial;
 
     public boolean isAccepting() {
-        return current.isAccepting();
+        return false;
     }
 
-    private State current;
+    private HashSet<BuchiState> current=new HashSet<BuchiState>();
 
     public void step(Valuation valuation){
-        current=current.nextState(valuation);
+    	HashSet<BuchiState> newCurrent = new HashSet<BuchiState>();
+    	for(BuchiState s: current) {
+    		newCurrent.addAll(s.nextState(valuation));
+    	}
+        current=newCurrent;
     }
 
     public void reset(){
-        current=initial;
+    	current.clear();
+        current.add(initial);
     }
 
 }
