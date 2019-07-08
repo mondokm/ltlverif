@@ -1,4 +1,4 @@
-package hu.mondokm.ltlverif;
+package hu.mondokm.ltlverif.buchi;
 
 import hu.bme.mit.theta.analysis.pred.PredAbstractors;
 import hu.bme.mit.theta.analysis.pred.PredPrec;

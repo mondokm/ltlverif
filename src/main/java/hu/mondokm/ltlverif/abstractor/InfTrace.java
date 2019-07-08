@@ -1,4 +1,4 @@
-package hu.mondokm.ltlverif;
+package hu.mondokm.ltlverif.abstractor;
 
 import hu.bme.mit.theta.analysis.Trace;
 import hu.bme.mit.theta.analysis.expr.ExprAction;

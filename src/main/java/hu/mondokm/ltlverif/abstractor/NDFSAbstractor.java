@@ -3,20 +3,15 @@ package hu.mondokm.ltlverif.abstractor;
 import hu.bme.mit.theta.analysis.Trace;
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
-import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceStatus;
-import hu.bme.mit.theta.analysis.expr.refinement.ItpRefutation;
-import hu.bme.mit.theta.analysis.pred.PredAbstractors;
 import hu.bme.mit.theta.analysis.pred.PredPrec;
-import hu.bme.mit.theta.analysis.pred.PredTransFunc;
+import hu.bme.mit.theta.analysis.pred.PredState;
 import hu.bme.mit.theta.analysis.unit.UnitState;
 import hu.bme.mit.theta.cfa.CFA;
 import hu.bme.mit.theta.cfa.analysis.CfaAction;
-import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
-import hu.mondokm.ltlverif.CegarTester;
-import hu.mondokm.ltlverif.CfaBuchiTransFunc;
-import hu.mondokm.ltlverif.InfTrace;
+import hu.mondokm.ltlverif.buchi.CfaBuchiTransFunc;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
+import hu.mondokm.ltlverif.buchi.BuchiState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +30,8 @@ public class NDFSAbstractor implements LtlAbstractor {
     private Stack<ProductState> cycle=new Stack<ProductState>();
     private ProductState sccStart=null;
     private PredPrec precision;
+    private boolean foundCEX=false;
+    private InfTrace result=null;
 
     public class NDFSData{
         private boolean blue=false,red=false;
@@ -46,7 +43,17 @@ public class NDFSAbstractor implements LtlAbstractor {
 
     public InfTrace check(PredPrec precision) {
         this.precision=precision;
-        return null;
+        foundCEX=false;
+        result=null;
+        CFA.Loc loc=cfa.getInitLoc();
+        BuchiState starting=automaton.getInitial();
+        stack.clear();
+        cycle.clear();
+        redblue.clear();
+
+        dfs_blue(new ProductState(null,loc, PredState.of(True()), starting, new BuchiAction(True(),null)));
+
+        return result;
     }
 
     public void dfs_blue(ProductState curr){
@@ -55,6 +62,9 @@ public class NDFSAbstractor implements LtlAbstractor {
         else redblue.get(curr).blue=true;
         for(ProductState next: CfaBuchiTransFunc.nextStates(curr,precision)){
             if(redblue.get(next)==null || redblue.get(next).blue==false) dfs_blue(next);
+            if(foundCEX){
+                return;
+            }
         }
         if(curr.getBuchiState().isAccepting()){
             sccStart=curr;
@@ -69,6 +79,9 @@ public class NDFSAbstractor implements LtlAbstractor {
         for(ProductState next:CfaBuchiTransFunc.nextStates(curr,precision)){
             cycle.push(next);
             if(redblue.get(next)==null || redblue.get(next).red==false) dfs_red(next);
+            if(foundCEX) {
+                return;
+            }
             if (next.equals(sccStart)) {
                 List<ExprAction> edges=new ArrayList<ExprAction>();
                 List<ExprState> states=new ArrayList<ExprState>();
@@ -90,18 +103,10 @@ public class NDFSAbstractor implements LtlAbstractor {
                 }
 
 //                Trace<ExprState,ExprAction> trace= ExprTraceUtils.traceFrom(edges);
-                Trace<ExprState,ExprAction> trace=Trace.of(states,edges);
-                ExprTraceStatus<ItpRefutation> status=checker.check(InfTrace.create(trace,cycleStart));
+                result= InfTrace.create(Trace.of(states,edges),cycleStart);
 
-                abstractionPassed=false;
-                if(status.isInfeasible()){
-                    PredPrec prec=refiner.refine(precision,trace,status.asInfeasible().getRefutation());
-                    precision=precision.join(prec);
-                }
-                if(status.isFeasible()){
-                    System.out.println(status.asFeasible().getValuations());
-                    cexFeasible=true;
-                }
+                foundCEX=true;
+
             }
             cycle.pop();
 

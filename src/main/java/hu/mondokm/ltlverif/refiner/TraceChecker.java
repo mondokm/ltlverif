@@ -17,7 +17,7 @@ import hu.bme.mit.theta.solver.Interpolant;
 import hu.bme.mit.theta.solver.ItpMarker;
 import hu.bme.mit.theta.solver.ItpPattern;
 import hu.bme.mit.theta.solver.ItpSolver;
-import hu.mondokm.ltlverif.InfTrace;
+import hu.mondokm.ltlverif.abstractor.InfTrace;
 
 import java.util.ArrayList;
 import java.util.HashSet;
