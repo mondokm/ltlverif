@@ -26,8 +26,8 @@ public class MainProgram {
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.addAp(0,Eq(Int(5),((VarDecl<IntType>)cfa.getVars().toArray()[0]).getRef()));
             BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
-            CegarTester tester=new CegarTester(cfa,automaton);
-            tester.testNDFS();
+            boolean result=CegarVerifier.verifyCFA(cfa,automaton);
+            System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
         } catch (Exception e) {
             e.printStackTrace();
         }

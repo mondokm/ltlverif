@@ -33,6 +33,15 @@ public class NDFSAbstractor implements LtlAbstractor {
     private boolean foundCEX=false;
     private InfTrace result=null;
 
+    private NDFSAbstractor(CFA cfa, BuchiAutomaton automaton){
+        this.cfa=cfa;
+        this.automaton=automaton;
+    }
+
+    public static NDFSAbstractor create(CFA cfa, BuchiAutomaton automaton){
+        return new NDFSAbstractor(cfa,automaton);
+    }
+
     public class NDFSData{
         private boolean blue=false,red=false;
         public NDFSData(boolean blue, boolean red){
