@@ -3,6 +3,7 @@ plugins {
 }
 
 apply plugin: 'application'
+apply plugin: 'antlr'
 mainClassName = "hu.mondokm.ltlverif.MainProgram"
 
 group 'mondokm'
@@ -20,8 +21,17 @@ repositories {
     }
 }
 
+sourceSets {
+    main{
+        java{
+            srcDirs 'src/main/java'
+            srcDirs 'src/main/gen'
+        }
+    }
+}
 
 dependencies {
+    antlr "org.antlr:antlr4:4.7.2"
     compile group: 'theta', name: 'hu.bme.mit.theta.cfa', version: '0.0.1'
     compile group: 'theta', name: 'hu.bme.mit.theta.core', version: '0.0.1'
     compile group: 'theta', name: 'hu.bme.mit.theta.solver', version: '0.0.1'
