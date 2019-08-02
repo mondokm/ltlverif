@@ -112,7 +112,11 @@ public class TraceChecker{
                 solver.check();
                 if(solver.getStatus().isUnsat()){
                     final Interpolant interpolant = solver.getInterpolant(pattern);
-                    status = ExprTraceStatus.infeasible(ItpRefutation.binary(Eq(var.getRef(),PathUtils.unfold(var.getRef(),indexings.get(cycleStart)).eval(model)),satPrefix,stateCount));
+//                    System.out.println(interpolant.eval(A));
+                    ItpFolder folder=new ItpFolder(indexings.get(satPrefix),model);
+//                    System.out.println(folder.foldin(interpolant.eval(A)));
+//                    status = ExprTraceStatus.infeasible(ItpRefutation.binary(Eq(var.getRef(),PathUtils.unfold(var.getRef(),indexings.get(cycleStart)).eval(model)),satPrefix,stateCount));
+                    status = ExprTraceStatus.infeasible(ItpRefutation.binary(folder.foldin(interpolant.eval(A)),satPrefix,stateCount));
                     cycle=false;
                     break;
                 }

@@ -37,6 +37,7 @@ public class CegarVerifier {
                 if(status.isInfeasible()){
                     PredPrec prec=refiner.refine(precision,trace.getTrace(),status.asInfeasible().getRefutation());
                     precision=precision.join(prec);
+                    System.out.println(prec);
                 }
                 if(status.isFeasible()){
                     System.out.println(status.asFeasible().getValuations());
