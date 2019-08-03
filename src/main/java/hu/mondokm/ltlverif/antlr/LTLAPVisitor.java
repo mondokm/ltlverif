@@ -6,6 +6,14 @@ import java.util.HashMap;
 
 public class LTLAPVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
+    private static LTLAPVisitor instance=new LTLAPVisitor();
+
+    private LTLAPVisitor(){};
+
+    public static LTLAPVisitor getInstance(){
+        return instance;
+    }
+
     HashMap<ParserRuleContext,Boolean> ltl=new HashMap<ParserRuleContext, Boolean>();
 
     @Override

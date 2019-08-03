@@ -7,6 +7,7 @@ import hu.bme.mit.theta.core.type.inttype.IntType;
 import hu.mondokm.ltlverif.antlr.LTLAPVisitor;
 import hu.mondokm.ltlverif.antlr.LTLGrammarLexer;
 import hu.mondokm.ltlverif.antlr.LTLGrammarParser;
+import hu.mondokm.ltlverif.antlr.ToStringVisitor;
 import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import org.antlr.runtime.tree.ParseTree;
@@ -24,13 +25,12 @@ public class MainProgram {
     public static void main(String[] args){
         try {
 
-            String text="a";
+            String text="b > a and F G abc";
             LTLGrammarLexer lexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream tokenStream=new CommonTokenStream(lexer);
             LTLGrammarParser parser=new LTLGrammarParser(tokenStream);
             LTLGrammarParser.ModelContext model =parser.model();
-            LTLAPVisitor visitor=new LTLAPVisitor();
-            System.out.println(visitor.visitModel(model));
+            System.out.println(ToStringVisitor.getInstance().visitModel(model));
 
             InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
