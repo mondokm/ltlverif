@@ -4,13 +4,11 @@ import hu.bme.mit.theta.cfa.*;
 import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
 import hu.bme.mit.theta.core.decl.VarDecl;
 import hu.bme.mit.theta.core.type.inttype.IntType;
-import hu.mondokm.ltlverif.antlr.LTLAPVisitor;
 import hu.mondokm.ltlverif.antlr.LTLGrammarLexer;
 import hu.mondokm.ltlverif.antlr.LTLGrammarParser;
 import hu.mondokm.ltlverif.antlr.ToStringVisitor;
 import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
-import org.antlr.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -25,7 +23,7 @@ public class MainProgram {
     public static void main(String[] args){
         try {
 
-            String text="b > a and F G abc";
+            String text="b > a and F G abc or true -> F (b+2>4)";
             LTLGrammarLexer lexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream tokenStream=new CommonTokenStream(lexer);
             LTLGrammarParser parser=new LTLGrammarParser(tokenStream);

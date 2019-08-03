@@ -19,7 +19,7 @@ public class AutomatonBuilder implements HOAConsumer {
 
     BuchiAutomaton automaton;
     HashMap<Integer, BuchiState> states=new HashMap<Integer, BuchiState>();
-    HashMap<Integer,Expr<BoolType>> aps=new HashMap<Integer, Expr<BoolType>>();
+    HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
 
     public Expr<BoolType> toExpr(BooleanExpression<AtomLabel> expr){
         switch (expr.getType()){
@@ -28,14 +28,18 @@ public class AutomatonBuilder implements HOAConsumer {
             case EXP_NOT: return Not(toExpr(expr.getLeft()));
             case EXP_FALSE: return False();
             case EXP_TRUE: return True();
-            case EXP_ATOM: return aps.get(new Integer(expr.getAtom().getAPIndex()));
+            case EXP_ATOM: return aps.get(new Integer(expr.getAtom().getAliasName()));
             default: return False();
 
         }
     }
 
-    public void addAp(int i,Expr<BoolType> expr){
-        aps.put(i,expr);
+    public void addAp(String name,Expr<BoolType> expr){
+        aps.put(name,expr);
+    }
+
+    public void setAps(HashMap<String,Expr<BoolType>> aps){
+        this.aps=aps;
     }
 
     public BuchiAutomaton parseAutomaton(String fileName){

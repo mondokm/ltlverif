@@ -4,13 +4,13 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.HashMap;
 
-public class LTLAPVisitor extends LTLGrammarBaseVisitor<Boolean> {
+public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
-    private static LTLAPVisitor instance=new LTLAPVisitor();
+    private static LTLExprVisitor instance=new LTLExprVisitor();
 
-    private LTLAPVisitor(){};
+    private LTLExprVisitor(){};
 
-    public static LTLAPVisitor getInstance(){
+    public static LTLExprVisitor getInstance(){
         return instance;
     }
 
