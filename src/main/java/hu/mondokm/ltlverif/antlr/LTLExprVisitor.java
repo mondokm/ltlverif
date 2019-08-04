@@ -23,7 +23,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitImplyExpression(LTLGrammarParser.ImplyExpressionContext ctx) {
-        super.visitImplyExpression(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for (LTLGrammarParser.OrExprContext op: ctx.ops){
             if(visitOrExpr(op)) {
@@ -37,7 +36,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitAndExpr(LTLGrammarParser.AndExprContext ctx) {
-        super.visitAndExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for (LTLGrammarParser.NotExprContext op: ctx.ops){
             if(visitNotExpr(op)) {
@@ -51,7 +49,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitNotExpr(LTLGrammarParser.NotExprContext ctx) {
-        super.visitNotExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for (LTLGrammarParser.NotExprContext op: ctx.ops){
             if(visitNotExpr(op)) {
@@ -69,7 +66,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitLtlExpr(LTLGrammarParser.LtlExprContext ctx) {
-        super.visitLtlExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         if(ctx.type!=null){
             ltl.put(ctx,true);
@@ -87,7 +83,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitEqExpr(LTLGrammarParser.EqExprContext ctx) {
-        super.visitEqExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for(LTLGrammarParser.RelationExprContext op:ctx.ops){
             if(visitRelationExpr(op)){
@@ -106,7 +101,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitRelationExpr(LTLGrammarParser.RelationExprContext ctx) {
-        super.visitRelationExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for(LTLGrammarParser.AdditiveExprContext op:ctx.ops){
             if(visitAdditiveExpr(op)){
@@ -125,7 +119,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitAdditiveExpr(LTLGrammarParser.AdditiveExprContext ctx) {
-        super.visitAdditiveExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for(LTLGrammarParser.MultiplicativeExprContext op:ctx.ops){
             if(visitMultiplicativeExpr(op)){
@@ -144,7 +137,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitMultiplicativeExpr(LTLGrammarParser.MultiplicativeExprContext ctx) {
-        super.visitMultiplicativeExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for(LTLGrammarParser.NegExprContext op:ctx.ops){
             if(visitNegExpr(op)){
@@ -163,7 +155,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitNegExpr(LTLGrammarParser.NegExprContext ctx) {
-        super.visitNegExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for (LTLGrammarParser.NegExprContext op: ctx.ops){
             if(visitNegExpr(op)) {
@@ -181,7 +172,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitPrimaryExpr(LTLGrammarParser.PrimaryExprContext ctx) {
-        super.visitPrimaryExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         boolean child=false;
         if(ctx.boolLitExpr()!=null) child=visitBoolLitExpr(ctx.boolLitExpr());
@@ -198,7 +188,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitParenExpr(LTLGrammarParser.ParenExprContext ctx) {
-        super.visitParenExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for (LTLGrammarParser.ImplyExpressionContext op: ctx.ops){
             if(visitImplyExpression(op)) {
@@ -222,7 +211,6 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     @Override
     public Boolean visitOrExpr(LTLGrammarParser.OrExprContext ctx) {
-        super.visitOrExpr(ctx);
         if(ltl.get(ctx)!=null) return ltl.get(ctx);
         for(LTLGrammarParser.AndExprContext op:ctx.ops){
             if(visitAndExpr(op)) {
