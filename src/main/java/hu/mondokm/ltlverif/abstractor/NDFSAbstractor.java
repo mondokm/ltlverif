@@ -76,6 +76,21 @@ public class NDFSAbstractor implements LtlAbstractor {
             }
         }
         if(curr.getBuchiState().isAccepting()){
+            if(curr.getLoc().equals(cfa.getFinalLoc())){
+                List<ExprAction> edges=new ArrayList<ExprAction>();
+                List<ExprState> states=new ArrayList<ExprState>();
+                states.add(UnitState.getInstance());
+                for(ProductState prod: stack) {
+                    if(prod.getToEdge()!=null) edges.add(CfaAction.create(prod.getToEdge())); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getCond()!=null) edges.add(prod.getCond()); else edges.add(new BuchiAction(True(),null));
+                    states.add(prod.getPredState());
+                    states.add(prod.getPredState());
+                }
+                result= InfTrace.create(Trace.of(states,edges),-1);
+
+                foundCEX=true;
+
+            }
             sccStart=curr;
             dfs_red(curr);
         }

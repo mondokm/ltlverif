@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import hu.bme.mit.theta.analysis.Trace;
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
+import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceFwBinItpChecker;
 import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceStatus;
 import hu.bme.mit.theta.analysis.expr.refinement.ItpRefutation;
 import hu.bme.mit.theta.core.decl.VarDecl;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 import static hu.bme.mit.theta.core.type.inttype.IntExprs.Eq;
 
 public class TraceChecker{
@@ -47,6 +49,7 @@ public class TraceChecker{
         checkNotNull(infTrace);
         final Trace<ExprState,ExprAction> trace=infTrace.getTrace();
         final int cycleStart=infTrace.getCycleStart();
+        if(cycleStart<0) return ExprTraceFwBinItpChecker.create(True(),True(),solver).check(trace);
         final int stateCount = trace.getStates().size();
 
         final List<VarIndexing> indexings = new ArrayList<>(stateCount);

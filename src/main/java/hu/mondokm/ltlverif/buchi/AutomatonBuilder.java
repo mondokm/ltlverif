@@ -20,6 +20,7 @@ public class AutomatonBuilder implements HOAConsumer {
     BuchiAutomaton automaton;
     HashMap<Integer, BuchiState> states=new HashMap<Integer, BuchiState>();
     HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
+    List<String> apNames;
 
     public Expr<BoolType> toExpr(BooleanExpression<AtomLabel> expr){
         switch (expr.getType()){
@@ -28,7 +29,7 @@ public class AutomatonBuilder implements HOAConsumer {
             case EXP_NOT: return Not(toExpr(expr.getLeft()));
             case EXP_FALSE: return False();
             case EXP_TRUE: return True();
-            case EXP_ATOM: return aps.get(new Integer(expr.getAtom().getAliasName()));
+            case EXP_ATOM: return aps.get(apNames.get(expr.getAtom().getAPIndex()));
             default: return False();
 
         }
@@ -82,7 +83,7 @@ public class AutomatonBuilder implements HOAConsumer {
 
     @Override
     public void setAPs(List<String> list) throws HOAConsumerException {
-
+        apNames=list;
     }
 
     @Override
