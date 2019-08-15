@@ -56,11 +56,28 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
                 return true;
             }
         }
-        if(ctx.ltlExpr()!=null && visitLtlExpr(ctx.ltlExpr())) {
+        if(ctx.binaryLtlExpr()!=null && visitBinaryLtlExpr(ctx.binaryLtlExpr())) {
             ltl.put(ctx,true);
             return true;
         }
         ltl.put(ctx,false);
+        return false;
+    }
+
+    @Override
+    public Boolean visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) {
+        if(ltl.get(ctx)!=null) return ltl.get(ctx);
+        if(ctx.type!=null){
+            ltl.put(ctx,true);
+            return true;
+        }
+        boolean child=visitLtlExpr(ctx.ltlExpr());
+        ltl.put(ctx,child);
+        return child;
+    }
+
+    @Override
+    public Boolean visitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) {
         return false;
     }
 

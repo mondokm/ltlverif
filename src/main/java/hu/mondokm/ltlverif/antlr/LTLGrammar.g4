@@ -22,10 +22,16 @@ andExpr:
 ;
 
 notExpr:
-	ltlExpr|
+	binaryLtlExpr|
 	NOT ops+=notExpr
 ;
 
+binaryLtlExpr:
+    ltlExpr |
+    ops+=binaryLtlExpr type=binaryLtlOp ops+=binaryLtlExpr;
+
+binaryLtlOp:
+    M_OP | W_OP | U_OP | R_OP;
 
 ltlExpr:
 	eqExpr |
@@ -114,6 +120,10 @@ LPAREN: '(';
 RPAREN: ')';
 F_OP: 'F';
 G_OP: 'G';
+U_OP: 'U';
+W_OP: 'W';
+M_OP: 'M';
+R_OP: 'R';
 INTLIT: [0-9]+;
 BOOLLIT: 'true' | 'false';
 ID: [a-zA-Z][a-zA-Z0-9_]*;

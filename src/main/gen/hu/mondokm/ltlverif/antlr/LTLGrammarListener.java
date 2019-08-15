@@ -58,6 +58,26 @@ public interface LTLGrammarListener extends ParseTreeListener {
 	 */
 	void exitNotExpr(LTLGrammarParser.NotExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LTLGrammarParser#binaryLtlExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LTLGrammarParser#binaryLtlExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LTLGrammarParser#binaryLtlOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LTLGrammarParser#binaryLtlOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LTLGrammarParser#ltlExpr}.
 	 * @param ctx the parse tree
 	 */

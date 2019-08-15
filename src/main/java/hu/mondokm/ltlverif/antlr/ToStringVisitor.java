@@ -79,7 +79,35 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
         if(ctx.ops.size()>0){
             return "! "+visitNotExpr(ctx.ops.get(0));
         }else{
+            return visitBinaryLtlExpr(ctx.binaryLtlExpr());
+        }
+    }
+
+    @Override
+    public String visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) {
+        if(!LTLExprVisitor.getInstance().visitBinaryLtlExpr(ctx)) {
+            String name=generateApName();
+            aps.put(name,apGeneratorVisitor.visitBinaryLtlExpr(ctx));
+            return name;
+        }
+        if(ctx.type!=null){
+            return visitBinaryLtlExpr(ctx.ops.get(0))+ " "+ visitBinaryLtlOp(ctx.type)+" "+visitBinaryLtlExpr(ctx.ops.get(1));
+
+        }else{
             return visitLtlExpr(ctx.ltlExpr());
+        }
+    }
+
+    @Override
+    public String visitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) {
+        if(ctx.U_OP()!=null){
+            return "U";
+        }else if(ctx.M_OP()!=null){
+            return "M";
+        }else if(ctx.W_OP()!=null){
+            return "W";
+        }else{
+            return "R";
         }
     }
 

@@ -35,7 +35,7 @@ public class MainProgram {
                 vars.put(decl.getName(),decl);
             }
 
-            String text="x/=x";
+            String text="x<5";
             LTLGrammarLexer lexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream tokenStream=new CommonTokenStream(lexer);
             LTLGrammarParser parser=new LTLGrammarParser(tokenStream);
@@ -58,7 +58,6 @@ public class MainProgram {
             boolean result=CegarVerifier.verifyCFA(cfa,automaton);
             System.out.println();
             System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
-
 
         } catch (Exception e) {
             e.printStackTrace();

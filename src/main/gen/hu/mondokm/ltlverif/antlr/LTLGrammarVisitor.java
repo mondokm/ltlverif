@@ -41,6 +41,18 @@ public interface LTLGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNotExpr(LTLGrammarParser.NotExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LTLGrammarParser#binaryLtlExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LTLGrammarParser#binaryLtlOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LTLGrammarParser#ltlExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -52,6 +52,20 @@ public class LTLGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitLtlExpr(LTLGrammarParser.LtlExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

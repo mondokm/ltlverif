@@ -76,6 +76,30 @@ public class LTLGrammarBaseListener implements LTLGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLtlExpr(LTLGrammarParser.LtlExprContext ctx) { }
 	/**
 	 * {@inheritDoc}

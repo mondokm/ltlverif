@@ -55,7 +55,17 @@ public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
     @Override
     public Expr<BoolType> visitNotExpr(LTLGrammarParser.NotExprContext ctx) {
         if(ctx.ops.size()>0) return Not(visitNotExpr(ctx.ops.get(0)));
-        else return visitLtlExpr(ctx.ltlExpr());
+        else return visitBinaryLtlExpr(ctx.binaryLtlExpr());
+    }
+
+    @Override
+    public Expr visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) {
+        return visitLtlExpr(ctx.ltlExpr());
+    }
+
+    @Override
+    public Expr visitBinaryLtlOp(LTLGrammarParser.BinaryLtlOpContext ctx) {
+        return super.visitBinaryLtlOp(ctx);
     }
 
     @Override
