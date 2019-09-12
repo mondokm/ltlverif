@@ -61,7 +61,6 @@ public class NDFSAbstractor implements LtlAbstractor {
         redblue.clear();
 
         dfs_blue(new ProductState(null,loc, PredState.of(True()), starting, new BuchiAction(True(),null)));
-
         return result;
     }
 
@@ -76,7 +75,7 @@ public class NDFSAbstractor implements LtlAbstractor {
             }
         }
         if(curr.getBuchiState().isAccepting()){
-            if(curr.getLoc().equals(cfa.getFinalLoc())){
+            if(curr.getLoc().equals(cfa.getFinalLoc()) || curr.getBuchiState().hasLoop()){
                 List<ExprAction> edges=new ArrayList<ExprAction>();
                 List<ExprState> states=new ArrayList<ExprState>();
                 states.add(UnitState.getInstance());
@@ -87,12 +86,12 @@ public class NDFSAbstractor implements LtlAbstractor {
                     states.add(prod.getPredState());
                 }
                 result= InfTrace.create(Trace.of(states,edges),-1);
-
                 foundCEX=true;
 
+            } else {
+                sccStart = curr;
+                dfs_red(curr);
             }
-            sccStart=curr;
-            dfs_red(curr);
         }
         stack.pop();
     }

@@ -30,6 +30,16 @@ public class BuchiState {
 
     private boolean accepting;
 
+    public boolean hasLoop() {
+        return hasLoop;
+    }
+
+    public void setHasLoop(boolean hasLoop) {
+        this.hasLoop = hasLoop;
+    }
+
+    private boolean hasLoop=false;
+
     public void addTransition(Expr<BoolType> boolTypeExpr, BuchiState buchiState) {
         transitions.put(boolTypeExpr, buchiState);
     }

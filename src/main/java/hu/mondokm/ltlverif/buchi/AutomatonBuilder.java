@@ -142,7 +142,7 @@ public class AutomatonBuilder implements HOAConsumer {
         for(Integer target:list){
             if(states.get(new Integer(target))==null)states.put(new Integer(target),new BuchiState(target));
             states.get(new Integer(i)).addTransition(toExpr(booleanExpression),states.get(new Integer(target)));
-//            System.out.println(i+" "+target+" "+booleanExpression+" "+toExpr(booleanExpression));
+            if(i==target && booleanExpression.isTRUE()) states.get(new Integer(i)).setHasLoop(true);
         }
     }
 

@@ -35,7 +35,7 @@ public class MainProgram {
                 vars.put(decl.getName(),decl);
             }
 
-            String text="x<5";
+            String text="F (x=0)";
             LTLGrammarLexer lexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream tokenStream=new CommonTokenStream(lexer);
             LTLGrammarParser parser=new LTLGrammarParser(tokenStream);
