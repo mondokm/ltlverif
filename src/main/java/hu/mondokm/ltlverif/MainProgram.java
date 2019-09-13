@@ -4,10 +4,7 @@ import hu.bme.mit.theta.cfa.*;
 import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
 import hu.bme.mit.theta.core.decl.VarDecl;
 import hu.bme.mit.theta.core.type.inttype.IntType;
-import hu.mondokm.ltlverif.antlr.APGeneratorVisitor;
-import hu.mondokm.ltlverif.antlr.LTLGrammarLexer;
-import hu.mondokm.ltlverif.antlr.LTLGrammarParser;
-import hu.mondokm.ltlverif.antlr.ToStringVisitor;
+import hu.mondokm.ltlverif.antlr.*;
 import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import org.antlr.v4.runtime.CharStreams;
@@ -28,7 +25,7 @@ public class MainProgram {
 
     public static void main(String[] args){
         try {
-            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
+            /*InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
             HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
             for(VarDecl decl:cfa.getVars()){
@@ -57,7 +54,14 @@ public class MainProgram {
             BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
             boolean result=CegarVerifier.verifyCFA(cfa,automaton);
             System.out.println();
-            System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
+            System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");*/
+
+            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/trafficlight.xsts"));
+            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
+            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
+            XSTSGrammarParser.XstsContext model =parser.xsts();
+            XSTSVisitor visitor=new XSTSVisitor();
+            visitor.visitXsts(model);
 
         } catch (Exception e) {
             e.printStackTrace();
