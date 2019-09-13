@@ -3,16 +3,16 @@ grammar XSTSGrammar;
 xsts:
     typeDeclarations+=typeDeclaration (typeDeclarations+=typeDeclaration)*
     variableDeclarations+=variableDeclaration (variableDeclarations+=variableDeclaration)*
-    transitions=nondetAction
-    initAction=nondetAction;
+    transitions=nonDetAction
+    initAction=nonDetAction;
 
 action:
     assumeAction|
     assignAction|
-    nondetAction
+    nonDetAction
     ;
 
-nondetAction:
+nonDetAction:
     CHOICE LCURLY choices+=sequentialAction RCURLY (NONDET_OR LCURLY choices+=sequentialAction RCURLY)*
 ;
 
