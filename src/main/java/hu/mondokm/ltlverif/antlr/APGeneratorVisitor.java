@@ -186,4 +186,6 @@ public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
         VarDecl decl=vars.get(ctx.name.getText());
         return decl.getRef();
     }
+
+    
 }
