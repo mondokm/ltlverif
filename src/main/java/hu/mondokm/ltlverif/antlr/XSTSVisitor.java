@@ -2,12 +2,13 @@ package hu.mondokm.ltlverif.antlr;
 
 import hu.bme.mit.theta.core.decl.Decls;
 import hu.bme.mit.theta.core.decl.VarDecl;
+import hu.bme.mit.theta.core.stmt.Stmt;
+import hu.bme.mit.theta.core.stmt.Stmts;
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.Type;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
 import hu.bme.mit.theta.core.type.inttype.IntType;
-import hu.mondokm.ltlverif.xsts.TypeDecl;
-import hu.mondokm.ltlverif.xsts.XSTS;
+import hu.mondokm.ltlverif.xsts.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +39,17 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
         for(XSTSGrammarParser.VariableDeclarationContext varDecl: ctx.variableDeclarations){
             visitVariableDeclaration(varDecl);
         }
-
+        xsts.setTransitions(processNonDetAction(ctx.transitions));
+        xsts.setInitAction(processNonDetAction(ctx.initAction));
         System.out.println(xsts.getVars());
         for(TypeDecl typeDecl:xsts.getTypes()){
             System.out.println(typeDecl);
             for(String literal:typeDecl.getLiterals()){
                 System.out.println(literal+" "+literalToIntMap.get(literal));
             }
+        }
+        for(List<Stmt> stmts: xsts.getTransitions().getStmts()){
+            System.out.println(stmts);
         }
         return null;
     }
@@ -203,7 +208,7 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
     @Override
     public Expr visitLiteral(XSTSGrammarParser.LiteralContext ctx) {
         if(ctx.BOOLLIT()!=null){
-            if(ctx.BOOLLIT().equals("true")) return True(); else return False();
+            if(ctx.BOOLLIT().getText().equals("true")) return True(); else return False();
         }else{
             return Int(Integer.parseInt(ctx.INTLIT().getText()));
         }
@@ -219,5 +224,45 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
     public Expr visitPrime(XSTSGrammarParser.PrimeContext ctx) {
         if(ctx.reference()!=null) return visitReference(ctx.reference());
         else return Prime(visitPrime(ctx.prime()));
+    }
+
+    public Action processAction(XSTSGrammarParser.ActionContext ctx) {
+        if(ctx.assignAction()!=null) return processAssignAction(ctx.assignAction());
+        else if(ctx.assumeAction()!=null) return processAssumeAction(ctx.assumeAction());
+        else return processNonDetAction(ctx.nonDetAction());
+    }
+
+    public NonDetAction processNonDetAction(XSTSGrammarParser.NonDetActionContext ctx) {
+        NonDetAction action=new NonDetAction();
+        for(XSTSGrammarParser.SequentialActionContext seq:ctx.choices){
+            action.addChoice(processSequentialAction(seq));
+        }
+        return action;
+    }
+
+    public SequentialAction processSequentialAction(XSTSGrammarParser.SequentialActionContext ctx) {
+        SequentialAction sequentialAction=new SequentialAction();
+        for(XSTSGrammarParser.ActionContext action:ctx.actions){
+            sequentialAction.addAction(processAction(action));
+        }
+        return sequentialAction;
+    }
+
+    public AssumeAction processAssumeAction(XSTSGrammarParser.AssumeActionContext ctx) {
+        AssumeAction assumeAction=new AssumeAction();
+        assumeAction.setStmt(Stmts.Assume(visitImplyExpression(ctx.cond)));
+        System.out.println(assumeAction.getStmt());
+        return assumeAction;
+    }
+
+    public AssignAction processAssignAction(XSTSGrammarParser.AssignActionContext ctx) {
+        AssignAction assignAction=new AssignAction();
+        assignAction.setStmt(Stmts.Assign(processAssignLHS(ctx.lhs),visitImplyExpression(ctx.rhs)));
+        System.out.println(assignAction.getStmt());
+        return assignAction;
+    }
+
+    public VarDecl processAssignLHS(XSTSGrammarParser.AssignLHSContext ctx){
+        return nameToDeclMap.get(ctx.name.getText());
     }
 }

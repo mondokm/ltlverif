@@ -47,6 +47,12 @@ public interface XSTSGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignAction(XSTSGrammarParser.AssignActionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link XSTSGrammarParser#assignLHS}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignLHS(XSTSGrammarParser.AssignLHSContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link XSTSGrammarParser#implyExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -23,7 +23,10 @@ assumeAction:
     ASSUME cond=implyExpression SEMICOLON;
 
 assignAction:
-    lhs=prime ASSIGN rhs=implyExpression SEMICOLON;
+    lhs=assignLHS ASSIGN rhs=implyExpression SEMICOLON;
+
+assignLHS:
+    name=ID PRIME*;
 
 implyExpression:
 	ops+=orExpr (IMPLIES ops+=orExpr)?

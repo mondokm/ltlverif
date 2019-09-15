@@ -1,5 +1,6 @@
 package hu.mondokm.ltlverif.xsts;
 
+import hu.bme.mit.theta.core.stmt.Stmt;
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
 
@@ -8,14 +9,22 @@ import java.util.List;
 
 public class NonDetAction implements Action {
 
-    private List<Action> choices;
+    private List<Action> choices=new ArrayList<Action>();
 
     @Override
-    public List<Expr<BoolType>> toExpr() {
-        List<Expr<BoolType>> exprs=new ArrayList<Expr<BoolType>>();
+    public List<List<Stmt>> getStmts() {
+        List<List<Stmt>> stmtList=new ArrayList<List<Stmt>>();
         for (Action action: choices){
-            exprs.addAll(action.toExpr());
+            stmtList.addAll(action.getStmts());
         }
-        return exprs;
+        return stmtList;
+    }
+
+    public void addChoice(Action action){
+        choices.add(action);
+    }
+
+    public List<Action> getChoices() {
+        return choices;
     }
 }

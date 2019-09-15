@@ -68,6 +68,16 @@ public interface XSTSGrammarListener extends ParseTreeListener {
 	 */
 	void exitAssignAction(XSTSGrammarParser.AssignActionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link XSTSGrammarParser#assignLHS}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignLHS(XSTSGrammarParser.AssignLHSContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XSTSGrammarParser#assignLHS}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignLHS(XSTSGrammarParser.AssignLHSContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link XSTSGrammarParser#implyExpression}.
 	 * @param ctx the parse tree
 	 */

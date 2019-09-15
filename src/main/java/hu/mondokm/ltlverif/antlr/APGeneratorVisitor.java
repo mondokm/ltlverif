@@ -187,5 +187,5 @@ public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
         return decl.getRef();
     }
 
-    
+
 }
