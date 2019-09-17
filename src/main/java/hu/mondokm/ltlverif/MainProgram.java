@@ -8,6 +8,8 @@ import hu.mondokm.ltlverif.antlr.*;
 import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import hu.mondokm.ltlverif.cfa.CfaSUT;
+import hu.mondokm.ltlverif.xsts.XSTS;
+import hu.mondokm.ltlverif.xsts.XSTSSUT;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -26,21 +28,34 @@ public class MainProgram {
 
     public static void main(String[] args){
         try {
-            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
+            /*InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
             HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
             for(VarDecl decl:cfa.getVars()){
                 vars.put(decl.getName(),decl);
+            }*/
+
+            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/trafficlight.xsts"));
+            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
+            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
+            XSTSGrammarParser.XstsContext model =parser.xsts();
+            XSTSVisitor visitor=new XSTSVisitor();
+            visitor.visitXsts(model);
+            XSTS xsts=visitor.getXsts();
+
+            HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
+            for(VarDecl decl:xsts.getVars()){
+                vars.put(decl.getName(),decl);
             }
 
-            String text="F (x=5)";
-            LTLGrammarLexer lexer=new LTLGrammarLexer(CharStreams.fromString(text));
-            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
-            LTLGrammarParser parser=new LTLGrammarParser(tokenStream);
-            LTLGrammarParser.ModelContext model =parser.model();
+            String text="F (normal = 1)";
+            LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
+            CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
+            LTLGrammarParser ltlParser=new LTLGrammarParser(ltlTokenStream);
+            LTLGrammarParser.ModelContext ltlModel =ltlParser.model();
             ToStringVisitor toStringVisitor=new ToStringVisitor(new APGeneratorVisitor(vars));
             System.out.println();
-            String ltlExpr=toStringVisitor.visitModel(model);
+            String ltlExpr=toStringVisitor.visitModel(ltlModel);
             System.out.println(ltlExpr);
             System.out.println(toStringVisitor.getAps().values());
 
@@ -53,16 +68,9 @@ public class MainProgram {
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.setAps(toStringVisitor.getAps());
             BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
-            boolean result=CegarVerifier.verifySUT(new CfaSUT(cfa),automaton);
+            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton);
             System.out.println();
             System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
-
-            /*XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/trafficlight.xsts"));
-            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
-            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
-            XSTSGrammarParser.XstsContext model =parser.xsts();
-            XSTSVisitor visitor=new XSTSVisitor();
-            visitor.visitXsts(model);*/
 
         } catch (Exception e) {
             e.printStackTrace();

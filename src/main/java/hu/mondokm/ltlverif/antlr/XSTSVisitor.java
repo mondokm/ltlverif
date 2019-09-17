@@ -27,6 +27,10 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
     HashMap<String,Integer> literalToIntMap=new HashMap<String,Integer>();
     HashMap<String,VarDecl> nameToDeclMap=new HashMap<String, VarDecl>();
 
+    public XSTS getXsts(){
+        return xsts;
+    }
+
     @Override
     public Expr visitXsts(XSTSGrammarParser.XstsContext ctx) {
         xsts=new XSTS();

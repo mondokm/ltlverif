@@ -17,4 +17,9 @@ public class Transition extends StmtAction {
     public List<Stmt> getStmts() {
         return stmts;
     }
+
+    @Override
+    public String toString() {
+        return getStmts().toString();
+    }
 }
