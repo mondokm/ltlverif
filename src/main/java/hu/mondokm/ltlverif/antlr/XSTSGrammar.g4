@@ -20,7 +20,7 @@ sequentialAction:
     actions+=action (actions+=action)*;
 
 assumeAction:
-    ASSUME cond=implyExpression SEMICOLON;
+    ASSUME buchiAction=implyExpression SEMICOLON;
 
 assignAction:
     lhs=assignLHS ASSIGN rhs=implyExpression SEMICOLON;

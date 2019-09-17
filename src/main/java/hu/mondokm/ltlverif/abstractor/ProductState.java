@@ -1,32 +1,20 @@
 package hu.mondokm.ltlverif.abstractor;
 
+import hu.bme.mit.theta.analysis.expr.ExprAction;
+import hu.bme.mit.theta.analysis.pred.PredPrec;
 import hu.bme.mit.theta.analysis.pred.PredState;
-import hu.bme.mit.theta.cfa.CFA;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiState;
 
-public class ProductState{
-    private CFA.Loc loc;
-    private CFA.Edge toEdge;
-    private PredState predState;
-    private BuchiState buchiState;
-    private BuchiAction cond;
+import java.util.HashSet;
 
-    public CFA.Loc getLoc() {
-        return loc;
-    }
+public abstract class ProductState{
 
-    public void setLoc(CFA.Loc loc) {
-        this.loc = loc;
-    }
+    protected PredState predState;
+    protected BuchiState buchiState;
+    protected BuchiAction buchiAction;
 
-    public CFA.Edge getToEdge() {
-        return toEdge;
-    }
-
-    public void setToEdge(CFA.Edge toEdge) {
-        this.toEdge = toEdge;
-    }
+    public abstract ExprAction getPrevAction();
 
     public PredState getPredState() {
         return predState;
@@ -44,40 +32,20 @@ public class ProductState{
         this.buchiState = buchiState;
     }
 
-    public BuchiAction getCond() {
-        return cond;
+    public BuchiAction getBuchiAction() {
+        return buchiAction;
     }
 
-    public void setCond(BuchiAction cond) {
-        this.cond = cond;
+    public void setBuchiAction(BuchiAction buchiAction) {
+        this.buchiAction = buchiAction;
     }
 
-    public ProductState(CFA.Edge toEdge, CFA.Loc loc, PredState predState, BuchiState buchiState, BuchiAction cond) {
-        this.toEdge=toEdge;
-        this.loc = loc;
+    protected ProductState(PredState predState, BuchiState buchiState, BuchiAction buchiAction) {
         this.predState = predState;
         this.buchiState = buchiState;
-        this.cond=cond;
+        this.buchiAction = buchiAction;
     }
 
-    public String toString() {
-        return loc.getName()+" "+predState.toString()+" "+ buchiState.getId();
-    }
+    public abstract HashSet<ProductState> getNextStates(PredPrec prec);
 
-    public int hashCode() {
-        return loc.getName().hashCode()+predState.hashCode()+ buchiState.getId();
-    }
-
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        } else if (obj instanceof ProductState) {
-            final ProductState that = (ProductState) obj;
-            return this.loc.getName().equals(that.loc.getName()) &&
-                    this.predState.equals(that.predState) &&
-                    this.buchiState.getId()==that.buchiState.getId();
-        } else {
-            return false;
-        }
-    }
 }

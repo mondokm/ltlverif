@@ -13,6 +13,7 @@ import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
 import hu.mondokm.ltlverif.abstractor.InfTrace;
 import hu.mondokm.ltlverif.abstractor.LtlAbstractor;
 import hu.mondokm.ltlverif.abstractor.NDFSAbstractor;
+import hu.mondokm.ltlverif.abstractor.SUT;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import hu.mondokm.ltlverif.refiner.TraceChecker;
 
@@ -24,8 +25,8 @@ public class CegarVerifier {
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
 
-    public static boolean verifyCFA(CFA cfa, BuchiAutomaton automaton){
-        LtlAbstractor abstractor = NDFSAbstractor.create(cfa,automaton);
+    public static boolean verifySUT(SUT sut, BuchiAutomaton automaton){
+        LtlAbstractor abstractor = NDFSAbstractor.create(sut,automaton);
         PredPrec precision=PredPrec.of();
         boolean cexFound=true;
         boolean cexFeasible=false;

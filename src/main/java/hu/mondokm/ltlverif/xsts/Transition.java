@@ -15,6 +15,6 @@ public class Transition extends StmtAction {
 
     @Override
     public List<Stmt> getStmts() {
-        return null;
+        return stmts;
     }
 }

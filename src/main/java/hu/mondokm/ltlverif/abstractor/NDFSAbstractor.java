@@ -8,7 +8,7 @@ import hu.bme.mit.theta.analysis.pred.PredState;
 import hu.bme.mit.theta.analysis.unit.UnitState;
 import hu.bme.mit.theta.cfa.CFA;
 import hu.bme.mit.theta.cfa.analysis.CfaAction;
-import hu.mondokm.ltlverif.buchi.CfaBuchiTransFunc;
+import hu.mondokm.ltlverif.cfa.CfaBuchiTransFunc;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import hu.mondokm.ltlverif.buchi.BuchiState;
@@ -22,7 +22,7 @@ import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
 public class NDFSAbstractor implements LtlAbstractor {
 
-    private CFA cfa;
+    private SUT sut;
     private BuchiAutomaton automaton;
 
     private HashMap<ProductState, NDFSData> redblue=new HashMap<ProductState, NDFSData>();
@@ -33,13 +33,13 @@ public class NDFSAbstractor implements LtlAbstractor {
     private boolean foundCEX=false;
     private InfTrace result=null;
 
-    private NDFSAbstractor(CFA cfa, BuchiAutomaton automaton){
-        this.cfa=cfa;
+    private NDFSAbstractor(SUT sut, BuchiAutomaton automaton){
+        this.sut=sut;
         this.automaton=automaton;
     }
 
-    public static NDFSAbstractor create(CFA cfa, BuchiAutomaton automaton){
-        return new NDFSAbstractor(cfa,automaton);
+    public static NDFSAbstractor create(SUT sut, BuchiAutomaton automaton){
+        return new NDFSAbstractor(sut,automaton);
     }
 
     public class NDFSData{
@@ -54,13 +54,11 @@ public class NDFSAbstractor implements LtlAbstractor {
         this.precision=precision;
         foundCEX=false;
         result=null;
-        CFA.Loc loc=cfa.getInitLoc();
-        BuchiState starting=automaton.getInitial();
         stack.clear();
         cycle.clear();
         redblue.clear();
 
-        dfs_blue(new ProductState(null,loc, PredState.of(True()), starting, new BuchiAction(True(),null)));
+        dfs_blue(sut.getInitialState(automaton.getInitial()));
         return result;
     }
 
@@ -68,20 +66,20 @@ public class NDFSAbstractor implements LtlAbstractor {
         stack.push(curr);
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(true,false));
         else redblue.get(curr).blue=true;
-        for(ProductState next: CfaBuchiTransFunc.nextStates(curr,precision)){
+        for(ProductState next: curr.getNextStates(precision)){
             if(redblue.get(next)==null || redblue.get(next).blue==false) dfs_blue(next);
             if(foundCEX){
                 return;
             }
         }
         if(curr.getBuchiState().isAccepting()){
-            if(curr.getLoc().equals(cfa.getFinalLoc()) || curr.getBuchiState().hasLoop()){
+            if(sut.isFinalState(curr) || curr.getBuchiState().hasLoop()){
                 List<ExprAction> edges=new ArrayList<ExprAction>();
                 List<ExprState> states=new ArrayList<ExprState>();
                 states.add(UnitState.getInstance());
                 for(ProductState prod: stack) {
-                    if(prod.getToEdge()!=null) edges.add(CfaAction.create(prod.getToEdge())); else edges.add(new BuchiAction(True(),null));
-                    if(prod.getCond()!=null) edges.add(prod.getCond()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getPrevAction()!=null) edges.add(prod.getPrevAction()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getBuchiAction()!=null) edges.add(prod.getBuchiAction()); else edges.add(new BuchiAction(True(),null));
                     states.add(prod.getPredState());
                     states.add(prod.getPredState());
                 }
@@ -99,7 +97,7 @@ public class NDFSAbstractor implements LtlAbstractor {
     public void dfs_red(ProductState curr){
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(false,true));
         else redblue.get(curr).red=true;
-        for(ProductState next:CfaBuchiTransFunc.nextStates(curr,precision)){
+        for(ProductState next:curr.getNextStates(precision)){
             cycle.push(next);
             if(redblue.get(next)==null || redblue.get(next).red==false) dfs_red(next);
             if(foundCEX) {
@@ -110,8 +108,8 @@ public class NDFSAbstractor implements LtlAbstractor {
                 List<ExprState> states=new ArrayList<ExprState>();
                 states.add(UnitState.getInstance());
                 for(ProductState prod: stack) {
-                    if(prod.getToEdge()!=null) edges.add(CfaAction.create(prod.getToEdge())); else edges.add(new BuchiAction(True(),null));
-                    if(prod.getCond()!=null) edges.add(prod.getCond()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getPrevAction()!=null) edges.add(prod.getPrevAction()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getBuchiAction()!=null) edges.add(prod.getBuchiAction()); else edges.add(new BuchiAction(True(),null));
                     states.add(prod.getPredState());
                     states.add(prod.getPredState());
                 }
@@ -119,8 +117,8 @@ public class NDFSAbstractor implements LtlAbstractor {
                 int cycleStart=states.size()-1;
 
                 for(ProductState prod: cycle) {
-                    if(prod.getToEdge()!=null) edges.add(CfaAction.create(prod.getToEdge())); else edges.add(new BuchiAction(True(),null));
-                    if(prod.getCond()!=null) edges.add(prod.getCond()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getPrevAction()!=null) edges.add(prod.getPrevAction()); else edges.add(new BuchiAction(True(),null));
+                    if(prod.getBuchiAction()!=null) edges.add(prod.getBuchiAction()); else edges.add(new BuchiAction(True(),null));
                     states.add(prod.getPredState());
                     states.add(prod.getPredState());
                 }
