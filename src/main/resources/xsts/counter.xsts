@@ -1,11 +1,12 @@
 var x : integer
+var y : boolean
 
 choice {
+    y:=true;
     x:=x+1;
 }
 
 choice {
 	x:=0;
-} or {
-    x:=6;
+    x:=1;
 }

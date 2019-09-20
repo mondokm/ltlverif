@@ -54,7 +54,7 @@ public class BuchiState {
         return next;
     }
 
-    public Set<BuchiAction> nextStates(PredState predState){
+    public Set<BuchiAction> nextStates(){
         HashSet<BuchiAction> next=new HashSet<BuchiAction>();
         for(Expr<BoolType> cond:transitions.keySet()){
             next.add(new BuchiAction(cond,transitions.get(cond)));

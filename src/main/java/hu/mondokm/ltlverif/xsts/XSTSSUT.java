@@ -20,21 +20,19 @@ public class XSTSSUT implements SUT {
 
     private XSTS xsts;
     private HashSet<Transition> transitions;
-    private BuchiState buchiStarting;
-    private static PredTransFunc predTransFunc=PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
+    private static PredTransFunc predTransFunc = PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
 
     public XSTSSUT(XSTS xsts) {
         this.xsts = xsts;
-        transitions=new HashSet<Transition>();
-        for(List<Stmt> stmts: xsts.getTransitions().getStmts()){
+        transitions = new HashSet<Transition>();
+        for (List<Stmt> stmts : xsts.getTransitions().getStmts()) {
             transitions.add(new Transition(stmts));
         }
     }
 
     @Override
     public ProductState getInitialState(BuchiState starting) {
-        buchiStarting=starting;
-        return new XSTSProductState(null,this,PredState.of(True()),null,null);
+        return new XSTSProductState(null, this, PredState.of(True()), starting, null);
     }
 
     @Override
@@ -42,26 +40,27 @@ public class XSTSSUT implements SUT {
         return false;
     }
 
-    private HashSet<Transition> getTransitions(){
+    public HashSet<Transition> getTransitions() {
         return transitions;
     }
 
-    public HashSet<Transition> getInitialTransitions(){
-        HashSet<Transition> initTransitions=new HashSet<Transition>();
-        for(List<Stmt> stmts: xsts.getInitAction().getStmts()){
+    public HashSet<Transition> getInitialTransitions() {
+        HashSet<Transition> initTransitions = new HashSet<Transition>();
+        for (List<Stmt> stmts : xsts.getInitAction().getStmts()) {
             initTransitions.add(new Transition(stmts));
         }
         return initTransitions;
     }
 
-    public HashSet<ProductState> nextStates(XSTSProductState curr, PredPrec precision){
-        HashSet <ProductState> states=new HashSet<ProductState>();
-        for(Transition transition:getTransitions()){
-            for(PredState state:predTransFunc.getSuccStates(curr.getPredState(),transition,precision)){
-                if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().nextStates(state)){
-                    for(PredState innerState:predTransFunc.getSuccStates(state,action,precision)){
-                        if(!innerState.isBottom())states.add(new XSTSProductState(transition,this,innerState,action.getTarget(),action));
-//                        System.out.println(transition.getStmts()+" "+innerState+" "+action.getTarget().getId());
+    public HashSet<ProductState> nextStates(XSTSProductState curr, Transition transition, PredPrec precision) {
+        HashSet<ProductState> states = new HashSet<ProductState>();
+        for (PredState state : predTransFunc.getSuccStates(curr.getPredState(), transition, precision)) {
+            if (!state.isBottom()) {
+                for (BuchiAction action : curr.getBuchiState().nextStates()) {
+                    for (PredState innerState : predTransFunc.getSuccStates(state, action, precision)) {
+                        if (!innerState.isBottom())
+                            states.add(new XSTSProductState(transition, this, innerState, action.getTarget(), action));
+                        System.out.println(transition.getStmts() + " " + innerState + " " + action.getTarget().getId());
                     }
                 }
             }
@@ -69,14 +68,4 @@ public class XSTSSUT implements SUT {
         return states;
     }
 
-    public HashSet<ProductState> initialTransitionStates(PredPrec precision){
-        HashSet <ProductState> states=new HashSet<ProductState>();
-        for(Transition transition:getInitialTransitions()){
-            for(PredState state:predTransFunc.getSuccStates(PredState.of(True()),transition,precision)){
-                if(!state.isBottom()) states.add(new XSTSProductState(transition,this,state,buchiStarting,null));
-            }
-        }
-        return states;
-    }
 }
-

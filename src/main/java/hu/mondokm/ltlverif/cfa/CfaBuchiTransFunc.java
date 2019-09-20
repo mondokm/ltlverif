@@ -21,7 +21,7 @@ public class CfaBuchiTransFunc {
         HashSet <ProductState> states=new HashSet<ProductState>();
         for(CFA.Edge edge: curr.getLoc().getOutEdges()) {
             for(PredState state:predTransFunc.getSuccStates(curr.getPredState(), CfaAction.create(edge),precision)){
-                if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().nextStates(state)){
+                if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().nextStates()){
                     for(PredState innerState:predTransFunc.getSuccStates(state,action,precision)){
                         if(!innerState.isBottom())states.add(new CfaProductState(edge, innerState, action.getTarget(),action));
                     }

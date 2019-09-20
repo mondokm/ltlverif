@@ -28,8 +28,10 @@ public class XSTSProductState extends ProductState {
 
     @Override
     public HashSet<ProductState> getNextStates(PredPrec prec) {
-        if(transition==null) return sut.initialTransitionStates(prec);
-        return sut.nextStates(this,prec);
+        HashSet<ProductState> states=new HashSet<ProductState>();
+        if(transition==null) for(Transition transition:sut.getInitialTransitions()) states.addAll(sut.nextStates(this,transition,prec));
+        else for(Transition transition:sut.getTransitions()) states.addAll(sut.nextStates(this,transition,prec));
+        return states;
     }
 
     @Override
