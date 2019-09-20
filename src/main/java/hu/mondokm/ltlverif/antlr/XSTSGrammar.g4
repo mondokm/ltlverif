@@ -1,7 +1,7 @@
 grammar XSTSGrammar;
 
 xsts:
-    typeDeclarations+=typeDeclaration (typeDeclarations+=typeDeclaration)*
+    typeDeclarations+=typeDeclaration*
     variableDeclarations+=variableDeclaration (variableDeclarations+=variableDeclaration)*
     transitions=nonDetAction
     initAction=nonDetAction;
@@ -20,7 +20,7 @@ sequentialAction:
     actions+=action (actions+=action)*;
 
 assumeAction:
-    ASSUME buchiAction=implyExpression SEMICOLON;
+    ASSUME cond=implyExpression SEMICOLON;
 
 assignAction:
     lhs=assignLHS ASSIGN rhs=implyExpression SEMICOLON;

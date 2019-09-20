@@ -55,14 +55,13 @@ public class XSTSSUT implements SUT {
     }
 
     public HashSet<ProductState> nextStates(XSTSProductState curr, PredPrec precision){
-        System.out.println("nextstates");
         HashSet <ProductState> states=new HashSet<ProductState>();
         for(Transition transition:getTransitions()){
             for(PredState state:predTransFunc.getSuccStates(curr.getPredState(),transition,precision)){
                 if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().nextStates(state)){
                     for(PredState innerState:predTransFunc.getSuccStates(state,action,precision)){
                         if(!innerState.isBottom())states.add(new XSTSProductState(transition,this,innerState,action.getTarget(),action));
-                        System.out.println(transition.getStmts()+" "+innerState+" "+action.getTarget().getId());
+//                        System.out.println(transition.getStmts()+" "+innerState+" "+action.getTarget().getId());
                     }
                 }
             }

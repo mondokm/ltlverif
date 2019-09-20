@@ -63,7 +63,7 @@ public class NDFSAbstractor implements LtlAbstractor {
     }
 
     public void dfs_blue(ProductState curr){
-        System.out.println("blue "+curr);
+//        System.out.println("blue "+curr);
         stack.push(curr);
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(true,false));
         else redblue.get(curr).blue=true;
@@ -76,7 +76,7 @@ public class NDFSAbstractor implements LtlAbstractor {
             }
         }
         if(curr.getBuchiState()!=null && curr.getBuchiState().isAccepting()){
-            if(sut.isFinalState(curr) || curr.getBuchiState().hasLoop() || !hasOutgoing){
+            if(sut.isFinalState(curr) || curr.getBuchiState().hasLoop() /*|| !hasOutgoing*/){
                 List<ExprAction> edges=new ArrayList<ExprAction>();
                 List<ExprState> states=new ArrayList<ExprState>();
                 states.add(UnitState.getInstance());
@@ -98,7 +98,7 @@ public class NDFSAbstractor implements LtlAbstractor {
     }
 
     public void dfs_red(ProductState curr){
-        System.out.println("red "+curr);
+//        System.out.println("red "+curr);
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(false,true));
         else redblue.get(curr).red=true;
         for(ProductState next:curr.getNextStates(precision)){
@@ -127,7 +127,7 @@ public class NDFSAbstractor implements LtlAbstractor {
                     states.add(prod.getPredState());
                 }
 
-                System.out.println(states);
+//                System.out.println(states);
 
 //                Trace<ExprState,ExprAction> trace= ExprTraceUtils.traceFrom(edges);
                 result= InfTrace.create(Trace.of(states,edges),cycleStart);

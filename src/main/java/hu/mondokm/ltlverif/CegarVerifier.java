@@ -25,12 +25,13 @@ public class CegarVerifier {
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
 
-    public static boolean verifySUT(SUT sut, BuchiAutomaton automaton){
+    public static boolean verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
         LtlAbstractor abstractor = NDFSAbstractor.create(sut,automaton);
-        PredPrec precision=PredPrec.of();
+        PredPrec precision=startingPrec;
         boolean cexFound=true;
         boolean cexFeasible=false;
         while(cexFound && !cexFeasible){
+            System.out.println(precision);
             InfTrace trace=abstractor.check(precision);
             if(trace==null) cexFound=false;
             else {
@@ -38,7 +39,6 @@ public class CegarVerifier {
                 if(status.isInfeasible()){
                     PredPrec prec=refiner.refine(precision,trace.getTrace(),status.asInfeasible().getRefutation());
                     precision=precision.join(prec);
-                    System.out.println(prec);
                 }
                 if(status.isFeasible()){
                     System.out.println(status.asFeasible().getValuations());

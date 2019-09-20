@@ -1,0 +1,11 @@
+var x : integer
+
+choice {
+    x:=x+1;
+}
+
+choice {
+	x:=0;
+} or {
+    x:=6;
+}

@@ -1,5 +1,6 @@
 package hu.mondokm.ltlverif;
 
+import hu.bme.mit.theta.analysis.pred.PredPrec;
 import hu.bme.mit.theta.cfa.*;
 import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
 import hu.bme.mit.theta.core.decl.VarDecl;
@@ -35,7 +36,7 @@ public class MainProgram {
                 vars.put(decl.getName(),decl);
             }*/
 
-            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/trafficlight.xsts"));
+            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/counter.xsts"));
             CommonTokenStream tokenStream=new CommonTokenStream(lexer);
             XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
             XSTSGrammarParser.XstsContext model =parser.xsts();
@@ -48,12 +49,14 @@ public class MainProgram {
                 vars.put(decl.getName(),decl);
             }
 
-            String text="F (normal = 1)";
+            HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
+
+            String text="F x>5";
             LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
             LTLGrammarParser ltlParser=new LTLGrammarParser(ltlTokenStream);
             LTLGrammarParser.ModelContext ltlModel =ltlParser.model();
-            ToStringVisitor toStringVisitor=new ToStringVisitor(new APGeneratorVisitor(vars));
+            ToStringVisitor toStringVisitor=new ToStringVisitor(new APGeneratorVisitor(vars, literalToIntMap));
             System.out.println();
             String ltlExpr=toStringVisitor.visitModel(ltlModel);
             System.out.println(ltlExpr);
@@ -68,7 +71,7 @@ public class MainProgram {
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.setAps(toStringVisitor.getAps());
             BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
-            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton);
+            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton, PredPrec.of(toStringVisitor.getAps().values()));
             System.out.println();
             System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
 

@@ -25,6 +25,11 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
 
     XSTS xsts;
     HashMap<String,Integer> literalToIntMap=new HashMap<String,Integer>();
+
+    public HashMap<String, Integer> getLiteralToIntMap() {
+        return literalToIntMap;
+    }
+
     HashMap<String,VarDecl> nameToDeclMap=new HashMap<String, VarDecl>();
 
     public XSTS getXsts(){
@@ -38,7 +43,7 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
             visitTypeDeclaration(typeDecl);
         }
         for(TypeDecl decl:xsts.getTypes()){
-            for(int i=0;i<decl.getLiterals().size();i++) literalToIntMap.put(decl.getLiterals().get(i),i);
+            for(int i=0;i<decl.getLiterals().size();i++) if(!literalToIntMap.containsKey(decl.getLiterals().get(i)))literalToIntMap.put(decl.getLiterals().get(i),i);
         }
         for(XSTSGrammarParser.VariableDeclarationContext varDecl: ctx.variableDeclarations){
             visitVariableDeclaration(varDecl);
@@ -76,8 +81,12 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
         else if(ctx.type.INT()!=null) type= IntType.getInstance();
         else type=IntType.getInstance();
         VarDecl decl=Decls.Var(ctx.name.getText(),type);
-        xsts.getVars().add(decl);
-        nameToDeclMap.put(decl.getName(),decl);
+        if(nameToDeclMap.containsKey(ctx.name.getText())){
+            System.out.println("Variable ["+ctx.name.getText()+"] already exists.");
+        }else {
+            xsts.getVars().add(decl);
+            nameToDeclMap.put(decl.getName(), decl);
+        }
         return null;
     }
 

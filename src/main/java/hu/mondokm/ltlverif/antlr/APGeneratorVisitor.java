@@ -17,8 +17,12 @@ import static hu.bme.mit.theta.core.type.inttype.IntExprs.Mod;
 public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
 
     HashMap<String, VarDecl> vars;
+    HashMap<String,Integer> literals;
 
-    public  APGeneratorVisitor(HashMap<String,VarDecl> vars){this.vars=vars;}
+    public  APGeneratorVisitor(HashMap<String,VarDecl> vars, HashMap<String,Integer> literals){
+        this.vars=vars;
+        this.literals=literals;
+    }
 
     @Override
     public Expr visitModel(LTLGrammarParser.ModelContext ctx) {
@@ -183,7 +187,9 @@ public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
 
     @Override
     public Expr visitVariable(LTLGrammarParser.VariableContext ctx) {
+        if(literals.containsKey(ctx.name.getText())) return Int(literals.get(ctx.name.getText()));
         VarDecl decl=vars.get(ctx.name.getText());
+        if(decl==null) System.out.println("Variable ["+ctx.name.getText()+"] not found");
         return decl.getRef();
     }
 
