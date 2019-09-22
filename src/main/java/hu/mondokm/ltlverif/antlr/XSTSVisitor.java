@@ -242,6 +242,7 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
     public Action processAction(XSTSGrammarParser.ActionContext ctx) {
         if(ctx.assignAction()!=null) return processAssignAction(ctx.assignAction());
         else if(ctx.assumeAction()!=null) return processAssumeAction(ctx.assumeAction());
+        else if(ctx.havocAction()!=null) return processHavocAction(ctx.havocAction());
         else return processNonDetAction(ctx.nonDetAction());
     }
 
@@ -273,6 +274,12 @@ public class XSTSVisitor extends XSTSGrammarBaseVisitor<Expr> {
         assignAction.setStmt(Stmts.Assign(processAssignLHS(ctx.lhs),visitImplyExpression(ctx.rhs)));
         System.out.println(assignAction.getStmt());
         return assignAction;
+    }
+
+    public HavocAction processHavocAction(XSTSGrammarParser.HavocActionContext ctx){
+        HavocAction havocAction=new HavocAction(Stmts.Havoc(nameToDeclMap.get(ctx.name.getText())));
+        System.out.println(havocAction.getStmt());
+        return havocAction;
     }
 
     public VarDecl processAssignLHS(XSTSGrammarParser.AssignLHSContext ctx){

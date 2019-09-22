@@ -100,6 +100,18 @@ public class XSTSGrammarBaseListener implements XSTSGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHavocAction(XSTSGrammarParser.HavocActionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHavocAction(XSTSGrammarParser.HavocActionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterImplyExpression(XSTSGrammarParser.ImplyExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

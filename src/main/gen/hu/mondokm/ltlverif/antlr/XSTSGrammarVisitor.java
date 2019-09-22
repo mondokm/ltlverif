@@ -53,6 +53,12 @@ public interface XSTSGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignLHS(XSTSGrammarParser.AssignLHSContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link XSTSGrammarParser#havocAction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHavocAction(XSTSGrammarParser.HavocActionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link XSTSGrammarParser#implyExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

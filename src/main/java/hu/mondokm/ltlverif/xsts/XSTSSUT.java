@@ -60,7 +60,7 @@ public class XSTSSUT implements SUT {
                     for (PredState innerState : predTransFunc.getSuccStates(state, action, precision)) {
                         if (!innerState.isBottom())
                             states.add(new XSTSProductState(transition, this, innerState, action.getTarget(), action));
-                        System.out.println(transition.getStmts() + " " + innerState + " " + action.getTarget().getId());
+//                        System.out.println(transition.getStmts() + " " + innerState + " " + action.getTarget().getId());
                     }
                 }
             }

@@ -9,6 +9,7 @@ xsts:
 action:
     assumeAction|
     assignAction|
+    havocAction|
     nonDetAction
     ;
 
@@ -27,6 +28,9 @@ assignAction:
 
 assignLHS:
     name=ID PRIME*;
+
+havocAction:
+    HAVOC name=ID SEMICOLON;
 
 implyExpression:
 	ops+=orExpr (IMPLIES ops+=orExpr)?
@@ -119,6 +123,7 @@ typeDeclaration:
 typeLiteral:
     name=ID;
 
+HAVOC: 'havoc';
 CHOICE: 'choice';
 NONDET_OR: 'or';
 SEMICOLON: ';';

@@ -78,6 +78,16 @@ public interface XSTSGrammarListener extends ParseTreeListener {
 	 */
 	void exitAssignLHS(XSTSGrammarParser.AssignLHSContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link XSTSGrammarParser#havocAction}.
+	 * @param ctx the parse tree
+	 */
+	void enterHavocAction(XSTSGrammarParser.HavocActionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XSTSGrammarParser#havocAction}.
+	 * @param ctx the parse tree
+	 */
+	void exitHavocAction(XSTSGrammarParser.HavocActionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link XSTSGrammarParser#implyExpression}.
 	 * @param ctx the parse tree
 	 */

@@ -51,7 +51,7 @@ public class MainProgram {
 
             HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
 
-            String text="G(not x=1)";
+            String text="G(not error)";
             LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
             LTLGrammarParser ltlParser=new LTLGrammarParser(ltlTokenStream);
