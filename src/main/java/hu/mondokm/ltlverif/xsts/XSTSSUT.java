@@ -56,7 +56,7 @@ public class XSTSSUT implements SUT {
         HashSet<ProductState> states = new HashSet<ProductState>();
         for (PredState state : predTransFunc.getSuccStates(curr.getPredState(), transition, precision)) {
             if (!state.isBottom()) {
-                for (BuchiAction action : curr.getBuchiState().nextStates()) {
+                for (BuchiAction action : curr.getBuchiState().getActions()) {
                     for (PredState innerState : predTransFunc.getSuccStates(state, action, precision)) {
                         if (!innerState.isBottom())
                             states.add(new XSTSProductState(transition, this, innerState, action.getTarget(), action));

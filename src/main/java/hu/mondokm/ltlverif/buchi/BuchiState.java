@@ -10,6 +10,8 @@ import java.util.*;
 
 public class BuchiState {
 
+    private HashSet<BuchiAction> actions;
+
 	private int id;
 	
 	public int getId() {
@@ -54,12 +56,15 @@ public class BuchiState {
         return next;
     }
 
-    public Set<BuchiAction> nextStates(){
-        HashSet<BuchiAction> next=new HashSet<BuchiAction>();
-        for(Expr<BoolType> cond:transitions.keySet()){
-            next.add(new BuchiAction(cond,transitions.get(cond)));
+    public Set<BuchiAction> getActions(){
+        if(actions==null){
+            actions=new HashSet<BuchiAction>();
+            for(Expr<BoolType> cond:transitions.keySet()){
+                actions.add(new BuchiAction(cond,transitions.get(cond)));
+            }
         }
-        return next;
+
+        return actions;
     }
     
     public int hashCode() {

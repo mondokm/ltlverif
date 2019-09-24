@@ -11,6 +11,8 @@ public class Transition extends StmtAction {
 
     public Transition(List<Stmt> stmts) {
         this.stmts = stmts;
+        System.out.println(this.toExpr());
+        System.out.println(this.nextIndexing());
     }
 
     @Override

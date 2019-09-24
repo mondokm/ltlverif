@@ -1,30 +1,25 @@
-var i : integer
-var a : integer
-var b : integer
-var n : integer
+var x : integer
+var y : integer
 var error : boolean
 
 choice {
-    assume i<n;
-    choice{
-        a:=a+1;
-        b:=b+2;
+    assume x<100;
+    choice {
+        assume x<50;
+        x:=x+1;
     } or {
-        a:=a+2;
-        b:=b+1;
+        assume !(x<50);
+        x:=x+1;
+        y:=y+1;
     }
-    i:=i+1;
 } or {
-    assume !(i<n);
-    assume !(a+b==3*n);
+    assume !(x<100);
+    assume !(y==100);
     error:=true;
 }
 
 choice {
-	i:=0;
-	a:=0;
-    b:=0;
-    havoc n;
-    assume n>=0;
+	x:=0;
+	y:=50;
     error:=false;
 }

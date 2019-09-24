@@ -33,6 +33,8 @@ public class NDFSAbstractor implements LtlAbstractor {
     private boolean foundCEX=false;
     private InfTrace result=null;
 
+    int blueVisited, redVisited;
+
     private NDFSAbstractor(SUT sut, BuchiAutomaton automaton){
         this.sut=sut;
         this.automaton=automaton;
@@ -54,15 +56,19 @@ public class NDFSAbstractor implements LtlAbstractor {
         this.precision=precision;
         foundCEX=false;
         result=null;
+        blueVisited=0;
+        redVisited=0;
         stack.clear();
         cycle.clear();
         redblue.clear();
 
         dfs_blue(sut.getInitialState(automaton.getInitial()));
+        System.out.println(blueVisited+" "+redVisited);
         return result;
     }
 
     public void dfs_blue(ProductState curr){
+        blueVisited++;
 //        System.out.println("blue "+curr);
         stack.push(curr);
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(true,false));
@@ -98,6 +104,7 @@ public class NDFSAbstractor implements LtlAbstractor {
     }
 
     public void dfs_red(ProductState curr){
+        redVisited++;
 //        System.out.println("red "+curr);
         if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(false,true));
         else redblue.get(curr).red=true;

@@ -9,7 +9,6 @@ import hu.bme.mit.theta.cfa.analysis.CfaAction;
 import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
 import hu.mondokm.ltlverif.abstractor.ProductState;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
-import hu.mondokm.ltlverif.cfa.CfaProductState;
 
 import java.util.HashSet;
 
@@ -21,7 +20,7 @@ public class CfaBuchiTransFunc {
         HashSet <ProductState> states=new HashSet<ProductState>();
         for(CFA.Edge edge: curr.getLoc().getOutEdges()) {
             for(PredState state:predTransFunc.getSuccStates(curr.getPredState(), CfaAction.create(edge),precision)){
-                if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().nextStates()){
+                if(!state.isBottom())for(BuchiAction action: curr.getBuchiState().getActions()){
                     for(PredState innerState:predTransFunc.getSuccStates(state,action,precision)){
                         if(!innerState.isBottom())states.add(new CfaProductState(edge, innerState, action.getTarget(),action));
                     }

@@ -150,7 +150,7 @@
 //        return passed;
 //    }
 //
-//    public HashSet<ProductState> nextStates(ProductState curr){
+//    public HashSet<ProductState> getActions(ProductState curr){
 //    	HashSet<ProductState> states=new HashSet<ProductState>();
 //    	if(depth>=bound){
 //    	    depthEnough=false;
@@ -178,7 +178,7 @@
 //        depth++;
 //    	stack.push(curr);
 //    	lowkeys.put(curr, new TarjanData(counter++));
-//        for(ProductState newProd: nextStates(curr)) {
+//        for(ProductState newProd: getActions(curr)) {
 //        	if(lowkeys.get(newProd)==null) dfs(newProd);
 //        	if(!passed) return;
 //        	if(lowkeys.get(newProd)!=null && lowkeys.get(newProd).onStack)
@@ -201,7 +201,7 @@
 //    			scc.add(prodState);
 //    		}
 //    		if(accepting) {
-//        		if(scc.size()!=1 || nextStates(curr).contains(curr) || cfa.getFinalLoc().equals(curr.loc)) {
+//        		if(scc.size()!=1 || getActions(curr).contains(curr) || cfa.getFinalLoc().equals(curr.loc)) {
 //        			passed=false;
 //        			System.out.println("SCC:");
 //        			for(ProductState prod: scc) {
@@ -231,7 +231,7 @@
 //    public void dfs_blue(ProductState curr){
 //        if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(true,false));
 //        else redblue.get(curr).blue=true;
-//        for(ProductState next:nextStates(curr)){
+//        for(ProductState next:getActions(curr)){
 //            if(redblue.get(next)==null || redblue.get(next).blue==false) dfs_blue(next);
 //            if(!passed){
 //                System.out.println(curr);
@@ -247,7 +247,7 @@
 //    public void dfs_red(ProductState curr){
 //        if(redblue.get(curr)==null)redblue.put(curr,new NDFSData(false,true));
 //        else redblue.get(curr).red=true;
-//        for(ProductState next:nextStates(curr)){
+//        for(ProductState next:getActions(curr)){
 //            if(redblue.get(next)==null || redblue.get(next).red==false) dfs_red(next);
 //            if(!passed) {
 //                System.out.println(curr);
