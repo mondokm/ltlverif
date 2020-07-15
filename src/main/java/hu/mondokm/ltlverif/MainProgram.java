@@ -29,29 +29,34 @@ public class MainProgram {
 
     public static void main(String[] args){
         try {
-            /*InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
+            long startTime = System.currentTimeMillis();
+            long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+
+            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter100_true.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
             HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
             for(VarDecl decl:cfa.getVars()){
                 vars.put(decl.getName(),decl);
-            }*/
-
-            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/counter.xsts"));
-            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
-            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
-            XSTSGrammarParser.XstsContext model =parser.xsts();
-            XSTSVisitor visitor=new XSTSVisitor();
-            visitor.visitXsts(model);
-            XSTS xsts=visitor.getXsts();
-
-            HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
-            for(VarDecl decl:xsts.getVars()){
-                vars.put(decl.getName(),decl);
             }
+            HashMap<String,Integer> literalToIntMap = new HashMap<String, Integer>();
 
-            HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
 
-            String text="G(not error)";
+//            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/orthogonal.xsts"));
+//            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
+//            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
+//            XSTSGrammarParser.XstsContext model =parser.xsts();
+//            XSTSVisitor visitor=new XSTSVisitor();
+//            visitor.visitXsts(model);
+//            XSTS xsts=visitor.getXsts();
+//
+//            HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
+//            for(VarDecl decl:xsts.getVars()){
+//                vars.put(decl.getName(),decl);
+//            }
+//
+//            HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
+
+            String text="G (x>50)";
             LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
             LTLGrammarParser ltlParser=new LTLGrammarParser(ltlTokenStream);
@@ -71,9 +76,22 @@ public class MainProgram {
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.setAps(toStringVisitor.getAps());
             BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
-            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton, PredPrec.of(toStringVisitor.getAps().values()));
+
+
+
+//            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton, PredPrec.of(toStringVisitor.getAps().values()));
+            boolean result=CegarVerifier.verifySUT(new CfaSUT(cfa),automaton, PredPrec.of(toStringVisitor.getAps().values()));
+
+            long stopTime = System.currentTimeMillis();
+            long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+
+            long elapsedTime = stopTime - startTime;
+            long actualMemUsed=afterUsedMem-beforeUsedMem;
+
             System.out.println();
             System.out.println(result?"Ltl expression holds":"Ltl expression does not hold");
+            System.out.println(elapsedTime/1000f + " s");
+            System.out.println(actualMemUsed/1000000f+" MB");
 
         } catch (Exception e) {
             e.printStackTrace();
