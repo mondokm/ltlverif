@@ -28,7 +28,7 @@ notExpr:
 
 binaryLtlExpr:
     ltlExpr |
-    ops+=binaryLtlExpr type=binaryLtlOp ops+=binaryLtlExpr;
+    op1=binaryLtlExpr type=binaryLtlOp op2=binaryLtlExpr;
 
 binaryLtlOp:
     M_OP | W_OP | U_OP | R_OP;
