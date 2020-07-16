@@ -1,8 +1,8 @@
 package hu.mondokm.ltlverif.antlr;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-
 import java.util.HashMap;
+
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import hu.bme.mit.theta.ltlverif.dsl.gen.*;
 

@@ -1,10 +1,9 @@
 package hu.mondokm.ltlverif.antlr;
 
-import hu.bme.mit.theta.core.type.Expr;
-import hu.bme.mit.theta.core.type.booltype.BoolType;
-
 import java.util.HashMap;
 
+import hu.bme.mit.theta.core.type.Expr;
+import hu.bme.mit.theta.core.type.booltype.BoolType;
 import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
 import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 

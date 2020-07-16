@@ -1,19 +1,32 @@
 package hu.mondokm.ltlverif.antlr;
 
-import hu.bme.mit.theta.core.decl.VarDecl;
-import hu.bme.mit.theta.core.type.Expr;
-import hu.bme.mit.theta.core.type.booltype.BoolType;
-import hu.bme.mit.theta.core.type.booltype.ImplyExpr;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Add;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Div;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Eq;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Geq;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Gt;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Leq;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Lt;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Mul;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Neg;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Neq;
+import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Sub;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.And;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.False;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.Imply;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.Not;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.Or;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
+import static hu.bme.mit.theta.core.type.inttype.IntExprs.Mod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.*;
-import static hu.bme.mit.theta.core.type.booltype.BoolExprs.*;
-import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
-import static hu.bme.mit.theta.core.type.inttype.IntExprs.Mod;
-
+import hu.bme.mit.theta.core.decl.VarDecl;
+import hu.bme.mit.theta.core.type.Expr;
+import hu.bme.mit.theta.core.type.booltype.BoolType;
 import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
 import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 

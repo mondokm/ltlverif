@@ -1,5 +1,7 @@
 package hu.mondokm.ltlverif;
 
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
 import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceStatus;
@@ -8,7 +10,6 @@ import hu.bme.mit.theta.analysis.expr.refinement.JoiningPrecRefiner;
 import hu.bme.mit.theta.analysis.pred.ExprSplitters;
 import hu.bme.mit.theta.analysis.pred.ItpRefToPredPrec;
 import hu.bme.mit.theta.analysis.pred.PredPrec;
-import hu.bme.mit.theta.cfa.CFA;
 import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
 import hu.mondokm.ltlverif.abstractor.InfTrace;
 import hu.mondokm.ltlverif.abstractor.LtlAbstractor;
@@ -16,8 +17,6 @@ import hu.mondokm.ltlverif.abstractor.NDFSAbstractor;
 import hu.mondokm.ltlverif.abstractor.SUT;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import hu.mondokm.ltlverif.refiner.TraceChecker;
-
-import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
 public class CegarVerifier {
 

@@ -1,29 +1,24 @@
 package hu.mondokm.ltlverif;
 
-import hu.bme.mit.theta.analysis.pred.PredPrec;
-import hu.bme.mit.theta.cfa.*;
-import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
-import hu.bme.mit.theta.core.decl.VarDecl;
-import hu.bme.mit.theta.core.type.inttype.IntType;
-import hu.mondokm.ltlverif.antlr.*;
-import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
-import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
-import hu.mondokm.ltlverif.cfa.CfaSUT;
-import hu.mondokm.ltlverif.xsts.XSTS;
-import hu.mondokm.ltlverif.xsts.XSTSSUT;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
-import static hu.bme.mit.theta.core.type.abstracttype.AbstractExprs.Eq;
-import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+
+import hu.bme.mit.theta.analysis.pred.PredPrec;
+import hu.bme.mit.theta.cfa.CFA;
+import hu.bme.mit.theta.cfa.dsl.CfaDslManager;
+import hu.bme.mit.theta.core.decl.VarDecl;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarLexer;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
+import hu.mondokm.ltlverif.antlr.APGeneratorVisitor;
+import hu.mondokm.ltlverif.antlr.ToStringVisitor;
+import hu.mondokm.ltlverif.buchi.AutomatonBuilder;
+import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
+import hu.mondokm.ltlverif.cfa.CfaSUT;
 
 public class MainProgram {
 
