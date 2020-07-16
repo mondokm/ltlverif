@@ -10,7 +10,7 @@ dependencies {
     compile(project(":theta-cfa-analysis"))
     compile(project(":theta-solver-z3"))
     compile(project(":theta-solver"))
-    compile(files("../../lib/jhoafparser-1.1.1.jar"))
+    compile(files("lib/jhoafparser-1.1.1.jar"))
     antlr("org.antlr:antlr4:4.1")
 }
 
