@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.HashMap;
 
+import hu.bme.mit.theta.ltlverif.dsl.gen.*;
+
 public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     private static LTLExprVisitor instance=new LTLExprVisitor();

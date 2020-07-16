@@ -5,6 +5,9 @@ import hu.bme.mit.theta.core.type.booltype.BoolType;
 
 import java.util.HashMap;
 
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
+
 public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
 
     HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
@@ -91,7 +94,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
             return name;
         }
         if(ctx.type!=null){
-            return visitBinaryLtlExpr(ctx.ops.get(0))+ " "+ visitBinaryLtlOp(ctx.type)+" "+visitBinaryLtlExpr(ctx.ops.get(1));
+            return visitBinaryLtlExpr(ctx.op1)+ " "+ visitBinaryLtlOp(ctx.type)+" "+visitBinaryLtlExpr(ctx.op2);
 
         }else{
             return visitLtlExpr(ctx.ltlExpr());

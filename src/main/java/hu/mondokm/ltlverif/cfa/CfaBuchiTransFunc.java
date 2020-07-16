@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 public class CfaBuchiTransFunc {
 
-    private static PredTransFunc predTransFunc=PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
+    private static PredTransFunc predTransFunc=PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstance().createSolver()));
 
     public static HashSet<ProductState> nextStates(CfaProductState curr, PredPrec precision){
         HashSet <ProductState> states=new HashSet<ProductState>();

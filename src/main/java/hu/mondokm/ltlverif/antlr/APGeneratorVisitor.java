@@ -14,6 +14,9 @@ import static hu.bme.mit.theta.core.type.booltype.BoolExprs.*;
 import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
 import static hu.bme.mit.theta.core.type.inttype.IntExprs.Mod;
 
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
+
 public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
 
     HashMap<String, VarDecl> vars;
@@ -58,7 +61,7 @@ public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr> {
 
     @Override
     public Expr<BoolType> visitNotExpr(LTLGrammarParser.NotExprContext ctx) {
-        if(ctx.ops.size()>0) return Not(visitNotExpr(ctx.ops.get(0)));
+        if(ctx.ops.size()>0) return Not(visitNotExpr(ctx.notExpr()));
         else return visitBinaryLtlExpr(ctx.binaryLtlExpr());
     }
 

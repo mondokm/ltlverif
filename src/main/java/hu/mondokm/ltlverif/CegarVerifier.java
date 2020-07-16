@@ -21,7 +21,7 @@ import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
 public class CegarVerifier {
 
-    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstace().createItpSolver());
+    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstance().createItpSolver());
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
 
