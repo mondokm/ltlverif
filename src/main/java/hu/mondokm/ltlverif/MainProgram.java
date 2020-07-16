@@ -35,22 +35,6 @@ public class MainProgram {
             }
             HashMap<String,Integer> literalToIntMap = new HashMap<String, Integer>();
 
-
-//            XSTSGrammarLexer lexer=new XSTSGrammarLexer(CharStreams.fromFileName("src/main/resources/xsts/orthogonal.xsts"));
-//            CommonTokenStream tokenStream=new CommonTokenStream(lexer);
-//            XSTSGrammarParser parser=new XSTSGrammarParser(tokenStream);
-//            XSTSGrammarParser.XstsContext model =parser.xsts();
-//            XSTSVisitor visitor=new XSTSVisitor();
-//            visitor.visitXsts(model);
-//            XSTS xsts=visitor.getXsts();
-//
-//            HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
-//            for(VarDecl decl:xsts.getVars()){
-//                vars.put(decl.getName(),decl);
-//            }
-//
-//            HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
-
             String text="G (x>50)";
             LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
@@ -63,19 +47,15 @@ public class MainProgram {
             System.out.println(toStringVisitor.getAps().values());
 
             ProcessBuilder processBuilder=new ProcessBuilder("/usr/bin/ltl2tgba","!("+ltlExpr+")", "-CB");
-            processBuilder.redirectOutput(new File("src/main/resources/automata/out.hoa"));
             processBuilder.redirectError(new File("error.txt"));
             Process process=processBuilder.start();
             process.waitFor();
 
             AutomatonBuilder builder=new AutomatonBuilder();
             builder.setAps(toStringVisitor.getAps());
-            BuchiAutomaton automaton=builder.parseAutomaton("src/main/resources/automata/out.hoa");
+            BuchiAutomaton automaton=builder.parseAutomaton(process.getInputStream());
 
-
-
-//            boolean result=CegarVerifier.verifySUT(new XSTSSUT(xsts),automaton, PredPrec.of(toStringVisitor.getAps().values()));
-            boolean result=CegarVerifier.verifySUT(new CfaSUT(cfa),automaton, PredPrec.of(toStringVisitor.getAps().values()));
+            boolean result=CegarVerifier.verifySUT(new CfaSUT(cfa),automaton, PredPrec.of(toStringVisitor.getAps().values())).isSafe();
 
             long stopTime = System.currentTimeMillis();
             long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();

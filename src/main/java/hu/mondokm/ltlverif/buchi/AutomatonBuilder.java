@@ -1,5 +1,15 @@
 package hu.mondokm.ltlverif.buchi;
 
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.And;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.False;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.Not;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.Or;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
 import jhoafparser.ast.AtomAcceptance;
@@ -8,12 +18,6 @@ import jhoafparser.ast.BooleanExpression;
 import jhoafparser.consumer.HOAConsumer;
 import jhoafparser.consumer.HOAConsumerException;
 import jhoafparser.parser.HOAFParser;
-
-import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.List;
-
-import static hu.bme.mit.theta.core.type.booltype.BoolExprs.*;
 
 public class AutomatonBuilder implements HOAConsumer {
 
@@ -43,10 +47,10 @@ public class AutomatonBuilder implements HOAConsumer {
         this.aps=aps;
     }
 
-    public BuchiAutomaton parseAutomaton(String fileName){
+    public BuchiAutomaton parseAutomaton(InputStream stream){
         automaton=new BuchiAutomaton();
         try{
-            HOAFParser.parseHOA(new FileInputStream(fileName), this);
+            HOAFParser.parseHOA(stream, this);
         }catch (Exception e){
             e.printStackTrace();
         }

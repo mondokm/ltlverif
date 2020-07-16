@@ -27,11 +27,11 @@ public class InfTrace {
 
     private int cycleStart;
 
-    public Trace getTrace() {
+    public Trace<ExprState, ExprAction> getTrace() {
         return trace;
     }
 
-    public void setTrace(Trace trace) {
+    public void setTrace(Trace<ExprState, ExprAction> trace) {
         this.trace = trace;
     }
 }

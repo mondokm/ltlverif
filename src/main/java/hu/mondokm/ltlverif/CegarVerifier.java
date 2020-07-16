@@ -1,7 +1,9 @@
 package hu.mondokm.ltlverif;
 
+import static com.google.common.base.Preconditions.checkState;
 import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
+import hu.bme.mit.theta.analysis.algorithm.SafetyResult;
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
 import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceStatus;
@@ -24,13 +26,14 @@ public class CegarVerifier {
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
 
-    public static boolean verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
+    public static SafetyResult<ExprState, ExprAction> verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
         LtlAbstractor abstractor = NDFSAbstractor.create(sut,automaton);
         PredPrec precision=startingPrec;
         boolean cexFound=true;
         boolean cexFeasible=false;
+        SafetyResult<ExprState, ExprAction> safety = null;
         while(cexFound && !cexFeasible){
-            System.out.println(precision);
+            //System.out.println(precision);
             InfTrace trace=abstractor.check(precision);
             if(trace==null) cexFound=false;
             else {
@@ -40,12 +43,18 @@ public class CegarVerifier {
                     precision=precision.join(prec);
                 }
                 if(status.isFeasible()){
-                    System.out.println(status.asFeasible().getValuations());
+                	safety = SafetyResult.<ExprState, ExprAction>unsafe(trace.getTrace(), null);
+                    //System.out.println(status.asFeasible().getValuations());
                     cexFeasible=true;
                 }
             }
         }
-        return !cexFound || !cexFeasible;
+        if (!cexFound || !cexFeasible) {
+        	return SafetyResult.<ExprState, ExprAction>safe(null);
+        }
+        checkState(safety != null);
+        return safety;
+        //return !cexFound || !cexFeasible;
     }
 
 }
