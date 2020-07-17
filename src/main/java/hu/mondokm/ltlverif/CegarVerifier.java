@@ -3,6 +3,7 @@ package hu.mondokm.ltlverif;
 import static com.google.common.base.Preconditions.checkState;
 import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 
+import hu.bme.mit.theta.analysis.algorithm.ARG;
 import hu.bme.mit.theta.analysis.algorithm.SafetyResult;
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
@@ -25,6 +26,7 @@ public class CegarVerifier {
     private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstance().createItpSolver());
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
+    private static final ARG<ExprState, ExprAction> emptyArg = ARG.<ExprState, ExprAction>create(null);
 
     public static SafetyResult<ExprState, ExprAction> verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
         LtlAbstractor abstractor = NDFSAbstractor.create(sut,automaton);
@@ -43,14 +45,14 @@ public class CegarVerifier {
                     precision=precision.join(prec);
                 }
                 if(status.isFeasible()){
-                	safety = SafetyResult.<ExprState, ExprAction>unsafe(trace.getTrace(), null);
+                	safety = SafetyResult.<ExprState, ExprAction>unsafe(trace.getTrace(), emptyArg);
                     //System.out.println(status.asFeasible().getValuations());
                     cexFeasible=true;
                 }
             }
         }
         if (!cexFound || !cexFeasible) {
-        	return SafetyResult.<ExprState, ExprAction>safe(null);
+        	return SafetyResult.<ExprState, ExprAction>safe(emptyArg);
         }
         checkState(safety != null);
         return safety;
