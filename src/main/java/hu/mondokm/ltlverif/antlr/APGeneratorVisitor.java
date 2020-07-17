@@ -21,8 +21,8 @@ import static hu.bme.mit.theta.core.type.inttype.IntExprs.Int;
 import static hu.bme.mit.theta.core.type.inttype.IntExprs.Mod;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hu.bme.mit.theta.core.decl.VarDecl;
 import hu.bme.mit.theta.core.type.Expr;
@@ -33,10 +33,10 @@ import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 
 public class APGeneratorVisitor extends LTLGrammarBaseVisitor<Expr<?>> {
 
-    HashMap<String, VarDecl<?>> vars;
-    HashMap<String,Integer> literals;
+    Map<String, VarDecl<?>> vars;
+    Map<String,Integer> literals;
 
-    public  APGeneratorVisitor(HashMap<String,VarDecl<?>> vars, HashMap<String,Integer> literals){
+	public APGeneratorVisitor(Map<String,VarDecl<?>> vars, Map<String,Integer> literals){
         this.vars=vars;
         this.literals=literals;
     }

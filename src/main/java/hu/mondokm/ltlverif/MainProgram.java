@@ -27,10 +27,10 @@ public class MainProgram {
             long startTime = System.currentTimeMillis();
             long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 
-            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter100_true.cfa");
+            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
-            HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
-            for(VarDecl decl:cfa.getVars()){
+            HashMap<String,VarDecl<?>> vars=new HashMap<>();
+            for(VarDecl<?> decl:cfa.getVars()){
                 vars.put(decl.getName(),decl);
             }
             HashMap<String,Integer> literalToIntMap = new HashMap<String, Integer>();

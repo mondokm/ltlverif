@@ -9,6 +9,7 @@ import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
@@ -22,8 +23,8 @@ import jhoafparser.parser.HOAFParser;
 public class AutomatonBuilder implements HOAConsumer {
 
     BuchiAutomaton automaton;
-    HashMap<Integer, BuchiState> states=new HashMap<Integer, BuchiState>();
-    HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
+    Map<Integer, BuchiState> states=new HashMap<Integer, BuchiState>();
+    Map<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
     List<String> apNames;
 
     public Expr<BoolType> toExpr(BooleanExpression<AtomLabel> expr){
@@ -43,7 +44,7 @@ public class AutomatonBuilder implements HOAConsumer {
         aps.put(name,expr);
     }
 
-    public void setAps(HashMap<String,Expr<BoolType>> aps){
+    public void setAps(Map<String,Expr<BoolType>> aps){
         this.aps=aps;
     }
 
@@ -52,7 +53,7 @@ public class AutomatonBuilder implements HOAConsumer {
         try{
             HOAFParser.parseHOA(stream, this);
         }catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return automaton;
     }
@@ -75,8 +76,8 @@ public class AutomatonBuilder implements HOAConsumer {
     @Override
     public void addStartStates(List<Integer> list) throws HOAConsumerException {
         int i=list.get(0);
-        if(states.get(new Integer(i))==null)states.put(new Integer(i),new BuchiState(i));
-        automaton.setInitial(states.get(new Integer(i)));
+        if(states.get(i)==null)states.put(i,new BuchiState(i));
+        automaton.setInitial(states.get(i));
 
     }
 
@@ -127,8 +128,8 @@ public class AutomatonBuilder implements HOAConsumer {
 
     @Override
     public void addState(int i, String s, BooleanExpression<AtomLabel> booleanExpression, List<Integer> list) throws HOAConsumerException {
-        if(states.get(new Integer(i))==null)states.put(new Integer(i),new BuchiState(i));
-        states.get(new Integer(i)).setAccepting(list!=null&&(!list.isEmpty()));
+        if(states.get(i)==null)states.put(i,new BuchiState(i));
+        states.get(i).setAccepting(list!=null&&(!list.isEmpty()));
 //        System.out.println(i+" "+booleanExpression+", "+list);
     }
 
@@ -144,9 +145,9 @@ public class AutomatonBuilder implements HOAConsumer {
     @Override
     public void addEdgeWithLabel(int i, BooleanExpression<AtomLabel> booleanExpression, List<Integer> list, List<Integer> list1) throws HOAConsumerException {
         for(Integer target:list){
-            if(states.get(new Integer(target))==null)states.put(new Integer(target),new BuchiState(target));
-            states.get(new Integer(i)).addTransition(toExpr(booleanExpression),states.get(new Integer(target)));
-            if(i==target && booleanExpression.isTRUE()) states.get(new Integer(i)).setHasLoop(true);
+            if(states.get(target)==null)states.put(target,new BuchiState(target));
+            states.get(i).addTransition(toExpr(booleanExpression),states.get(target));
+            if(i==target && booleanExpression.isTRUE()) states.get(i).setHasLoop(true);
         }
     }
 

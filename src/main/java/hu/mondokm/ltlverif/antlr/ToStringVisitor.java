@@ -1,6 +1,7 @@
 package hu.mondokm.ltlverif.antlr;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
@@ -9,7 +10,7 @@ import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 
 public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
 
-    HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
+    Map<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
     private int counter=0;
     private APGeneratorVisitor apGeneratorVisitor;
 
@@ -21,7 +22,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     	aps.put(name, (Expr<BoolType>)expr);
     }
 
-    public HashMap<String,Expr<BoolType>> getAps(){return aps;}
+    public Map<String,Expr<BoolType>> getAps(){return aps;}
 
     @Override
     public String visitModel(LTLGrammarParser.ModelContext ctx) {
