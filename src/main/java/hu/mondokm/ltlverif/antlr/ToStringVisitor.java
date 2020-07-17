@@ -130,8 +130,10 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitLtlOp(LTLGrammarParser.LtlOpContext ctx) {
         if(ctx.F_OP()!=null){
             return "F";
-        }else{
+        }else if(ctx.G_OP()!=null) {
             return "G";
+        } else {
+            return "X";
         }
     }
 

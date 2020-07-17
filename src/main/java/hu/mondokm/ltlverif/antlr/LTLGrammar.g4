@@ -39,7 +39,7 @@ ltlExpr:
 ;
 
 ltlOp:
-         F_OP|G_OP
+         F_OP|G_OP|X_OP
      ;
 
 eqExpr:
@@ -124,6 +124,7 @@ U_OP: 'U';
 W_OP: 'W';
 M_OP: 'M';
 R_OP: 'R';
+X_OP: 'X';
 INTLIT: [0-9]+;
 BOOLLIT: 'true' | 'false';
 ID: [a-zA-Z][a-zA-Z0-9_]*;

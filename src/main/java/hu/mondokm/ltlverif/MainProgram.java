@@ -32,7 +32,7 @@ public class MainProgram {
             long startTime = System.currentTimeMillis();
             long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
 
-            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter100_true.cfa");
+            InputStream inputStream = new FileInputStream("src/main/resources/cfa/counter5_true_err.cfa");
             CFA cfa = CfaDslManager.createCfa(inputStream);
             HashMap<String,VarDecl> vars=new HashMap<String, VarDecl>();
             for(VarDecl decl:cfa.getVars()){
@@ -56,7 +56,7 @@ public class MainProgram {
 //
 //            HashMap<String,Integer> literalToIntMap= visitor.getLiteralToIntMap();
 
-            String text="G (x>50)";
+            String text="G (not err)";
             LTLGrammarLexer ltlLexer=new LTLGrammarLexer(CharStreams.fromString(text));
             CommonTokenStream ltlTokenStream=new CommonTokenStream(ltlLexer);
             LTLGrammarParser ltlParser=new LTLGrammarParser(ltlTokenStream);
