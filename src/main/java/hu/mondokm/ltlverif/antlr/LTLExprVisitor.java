@@ -1,10 +1,12 @@
 package hu.mondokm.ltlverif.antlr;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-import hu.bme.mit.theta.ltlverif.dsl.gen.*;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 
 public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
@@ -16,7 +18,7 @@ public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
         return instance;
     }
 
-    HashMap<ParserRuleContext,Boolean> ltl=new HashMap<ParserRuleContext, Boolean>();
+    Map<ParserRuleContext,Boolean> ltl=new HashMap<ParserRuleContext, Boolean>();
 
     @Override
     public Boolean visitModel(LTLGrammarParser.ModelContext ctx) {
