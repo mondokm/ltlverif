@@ -5,10 +5,15 @@ main process cfa {
 	var lock : int
 
 	loc L6
-	init loc L0
+	loc L0
+	init loc IL1
+	IL1 -> L0 { err := false }
 	loc L9
 	final loc L1
-	error loc L2
+    loc L2
+	var err : bool
+    error loc ERR1
+    L2 -> ERR1 { err := true }
 	loc L8
 
 	L9 -> L8 {

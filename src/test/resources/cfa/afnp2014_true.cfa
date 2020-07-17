@@ -3,13 +3,18 @@ main process cfa {
 	var y : int
 	var b : bool
 
-	init loc L0
+	loc L0
+	init loc IL1
+	IL1 -> L0 { err := false }
     loc L1
     loc L2
     loc L3
     loc L4
     final loc END
-    error loc ERR
+    loc ERR
+	var err : bool
+    error loc ERR1
+    ERR -> ERR1 { err := true }
 
 	L0 -> L1 { x:=1 y:=0 }
 	L1 -> L2 { havoc b }
