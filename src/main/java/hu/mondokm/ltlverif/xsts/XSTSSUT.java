@@ -1,5 +1,10 @@
 package hu.mondokm.ltlverif.xsts;
 
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+
+import java.util.HashSet;
+import java.util.List;
+
 import hu.bme.mit.theta.analysis.pred.PredAbstractors;
 import hu.bme.mit.theta.analysis.pred.PredPrec;
 import hu.bme.mit.theta.analysis.pred.PredState;
@@ -11,16 +16,11 @@ import hu.mondokm.ltlverif.abstractor.SUT;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 import hu.mondokm.ltlverif.buchi.BuchiState;
 
-import java.util.HashSet;
-import java.util.List;
-
-import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
-
 public class XSTSSUT implements SUT {
 
     private XSTS xsts;
     private HashSet<Transition> transitions;
-    private static PredTransFunc predTransFunc = PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
+    private static PredTransFunc predTransFunc = PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstance().createSolver()));
 
     public XSTSSUT(XSTS xsts) {
         this.xsts = xsts;

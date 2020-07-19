@@ -1,5 +1,10 @@
 package hu.mondokm.ltlverif;
 
+import static com.google.common.base.Preconditions.checkState;
+import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
+
+import hu.bme.mit.theta.analysis.algorithm.ARG;
+import hu.bme.mit.theta.analysis.algorithm.SafetyResult;
 import hu.bme.mit.theta.analysis.expr.ExprAction;
 import hu.bme.mit.theta.analysis.expr.ExprState;
 import hu.bme.mit.theta.analysis.expr.refinement.ExprTraceStatus;
@@ -8,7 +13,6 @@ import hu.bme.mit.theta.analysis.expr.refinement.JoiningPrecRefiner;
 import hu.bme.mit.theta.analysis.pred.ExprSplitters;
 import hu.bme.mit.theta.analysis.pred.ItpRefToPredPrec;
 import hu.bme.mit.theta.analysis.pred.PredPrec;
-import hu.bme.mit.theta.cfa.CFA;
 import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
 import hu.mondokm.ltlverif.abstractor.InfTrace;
 import hu.mondokm.ltlverif.abstractor.LtlAbstractor;
@@ -17,21 +21,21 @@ import hu.mondokm.ltlverif.abstractor.SUT;
 import hu.mondokm.ltlverif.buchi.BuchiAutomaton;
 import hu.mondokm.ltlverif.refiner.TraceChecker;
 
-import static hu.bme.mit.theta.core.type.booltype.BoolExprs.True;
-
 public class CegarVerifier {
 
-    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstace().createItpSolver());
+    private static TraceChecker checker=TraceChecker.create(True(),True(), Z3SolverFactory.getInstance().createItpSolver());
     private static JoiningPrecRefiner<ExprState, ExprAction,PredPrec, ItpRefutation> refiner=JoiningPrecRefiner.create(new ItpRefToPredPrec(ExprSplitters.atoms()));
 
+    private static final ARG<ExprState, ExprAction> emptyArg = ARG.<ExprState, ExprAction>create(null);
 
-    public static boolean verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
+    public static SafetyResult<ExprState, ExprAction> verifySUT(SUT sut, BuchiAutomaton automaton, PredPrec startingPrec){
         LtlAbstractor abstractor = NDFSAbstractor.create(sut,automaton);
         PredPrec precision=startingPrec;
         boolean cexFound=true;
         boolean cexFeasible=false;
+        SafetyResult<ExprState, ExprAction> safety = null;
         while(cexFound && !cexFeasible){
-            System.out.println(precision);
+            //System.out.println(precision);
             InfTrace trace=abstractor.check(precision);
             if(trace==null) cexFound=false;
             else {
@@ -41,12 +45,18 @@ public class CegarVerifier {
                     precision=precision.join(prec);
                 }
                 if(status.isFeasible()){
-                    System.out.println(status.asFeasible().getValuations());
+                	safety = SafetyResult.<ExprState, ExprAction>unsafe(trace.getTrace(), emptyArg);
+                    //System.out.println(status.asFeasible().getValuations());
                     cexFeasible=true;
                 }
             }
         }
-        return !cexFound || !cexFeasible;
+        if (!cexFound || !cexFeasible) {
+        	return SafetyResult.<ExprState, ExprAction>safe(emptyArg);
+        }
+        checkState(safety != null);
+        return safety;
+        //return !cexFound || !cexFeasible;
     }
 
 }

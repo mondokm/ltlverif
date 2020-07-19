@@ -40,7 +40,7 @@ ltlExpr:
 
 ltlOp:
          F_OP|G_OP|X_OP
-     ;
+;
 
 eqExpr:
 	ops+=relationExpr (oper=eqOperator ops+=relationExpr)?

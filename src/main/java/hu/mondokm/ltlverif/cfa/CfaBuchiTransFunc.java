@@ -1,5 +1,7 @@
 package hu.mondokm.ltlverif.cfa;
 
+import java.util.HashSet;
+
 import hu.bme.mit.theta.analysis.pred.PredAbstractors;
 import hu.bme.mit.theta.analysis.pred.PredPrec;
 import hu.bme.mit.theta.analysis.pred.PredState;
@@ -10,11 +12,9 @@ import hu.bme.mit.theta.solver.z3.Z3SolverFactory;
 import hu.mondokm.ltlverif.abstractor.ProductState;
 import hu.mondokm.ltlverif.buchi.BuchiAction;
 
-import java.util.HashSet;
-
 public class CfaBuchiTransFunc {
 
-    private static PredTransFunc predTransFunc=PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstace().createSolver()));
+    private static PredTransFunc predTransFunc=PredTransFunc.create(PredAbstractors.booleanSplitAbstractor(Z3SolverFactory.getInstance().createSolver()));
 
     public static HashSet<ProductState> nextStates(CfaProductState curr, PredPrec precision){
         HashSet <ProductState> states=new HashSet<ProductState>();

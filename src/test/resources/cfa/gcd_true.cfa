@@ -1,0 +1,37 @@
+main process cfa {
+	var a : int
+	var b : int
+
+	loc LI
+	init loc IL1
+	IL1 -> LI { err := false }
+	loc L0
+	loc L1
+	final loc LF
+    loc LE
+	var err : bool
+    error loc ERR1
+    LE -> ERR1 { err := true }
+
+	LI -> L0{
+		assume a > 0
+		assume b > 0
+	}
+	L0 -> L0 {
+		assume a > b
+		a := a - b
+	}
+	L0 -> L0 {
+		assume a < b
+		b := b - a
+	}
+	L0 -> L1 {
+		assume a = b
+	}
+	L1 -> LF {
+		assume a /= 0
+	}
+	L1 -> LE {
+		assume a = 0
+	}
+}

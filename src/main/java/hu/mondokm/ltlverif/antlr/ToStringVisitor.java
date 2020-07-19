@@ -1,21 +1,28 @@
 package hu.mondokm.ltlverif.antlr;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hu.bme.mit.theta.core.type.Expr;
 import hu.bme.mit.theta.core.type.booltype.BoolType;
-
-import java.util.HashMap;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarBaseVisitor;
+import hu.bme.mit.theta.ltlverif.dsl.gen.LTLGrammarParser;
 
 public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
 
-    HashMap<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
+    Map<String,Expr<BoolType>> aps=new HashMap<String, Expr<BoolType>>();
     private int counter=0;
     private APGeneratorVisitor apGeneratorVisitor;
 
     public ToStringVisitor(APGeneratorVisitor apGeneratorVisitor){
         this.apGeneratorVisitor=apGeneratorVisitor;
     }
+    
+    public void unsafePut(String name, Expr<?> expr) {
+    	aps.put(name, (Expr<BoolType>)expr);
+    }
 
-    public HashMap<String,Expr<BoolType>> getAps(){return aps;}
+    public Map<String,Expr<BoolType>> getAps(){return aps;}
 
     @Override
     public String visitModel(LTLGrammarParser.ModelContext ctx) {
@@ -26,8 +33,8 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitImplyExpression(LTLGrammarParser.ImplyExpressionContext ctx) {
         if(!LTLExprVisitor.getInstance().visitImplyExpression(ctx)){
             String name=generateApName();
-            Expr expr=apGeneratorVisitor.visitImplyExpression(ctx);
-            aps.put(name,expr);
+            Expr<?> expr=apGeneratorVisitor.visitImplyExpression(ctx);
+            unsafePut(name,expr);
             return name;
         }
         if(ctx.ops.size()>1){
@@ -41,7 +48,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitOrExpr(LTLGrammarParser.OrExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitOrExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitOrExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitOrExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -57,7 +64,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitAndExpr(LTLGrammarParser.AndExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitAndExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitAndExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitAndExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -73,7 +80,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitNotExpr(LTLGrammarParser.NotExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitNotExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitNotExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitNotExpr(ctx));
             return name;
         }
         if(ctx.ops.size()>0){
@@ -87,11 +94,11 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitBinaryLtlExpr(LTLGrammarParser.BinaryLtlExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitBinaryLtlExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitBinaryLtlExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitBinaryLtlExpr(ctx));
             return name;
         }
         if(ctx.type!=null){
-            return visitBinaryLtlExpr(ctx.ops.get(0))+ " "+ visitBinaryLtlOp(ctx.type)+" "+visitBinaryLtlExpr(ctx.ops.get(1));
+            return visitBinaryLtlExpr(ctx.op1)+ " "+ visitBinaryLtlOp(ctx.type)+" "+visitBinaryLtlExpr(ctx.op2);
 
         }else{
             return visitLtlExpr(ctx.ltlExpr());
@@ -115,7 +122,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitLtlExpr(LTLGrammarParser.LtlExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitLtlExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitLtlExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitLtlExpr(ctx));
             return name;
         }
         if(ctx.ops.size()>0){
@@ -141,7 +148,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitEqExpr(LTLGrammarParser.EqExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitEqExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitEqExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitEqExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -166,7 +173,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitRelationExpr(LTLGrammarParser.RelationExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitRelationExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitRelationExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitRelationExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -193,7 +200,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitAdditiveExpr(LTLGrammarParser.AdditiveExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitAdditiveExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitAdditiveExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitAdditiveExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -216,7 +223,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitMultiplicativeExpr(LTLGrammarParser.MultiplicativeExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitMultiplicativeExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitMultiplicativeExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitMultiplicativeExpr(ctx));
             return name;
         }
         StringBuilder builder=new StringBuilder();
@@ -241,7 +248,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitNegExpr(LTLGrammarParser.NegExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitNegExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitNegExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitNegExpr(ctx));
             return name;
         }
         if(ctx.ops.size()>0){
@@ -255,7 +262,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitPrimaryExpr(LTLGrammarParser.PrimaryExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitPrimaryExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitPrimaryExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitPrimaryExpr(ctx));
             return name;
         }
         if(ctx.parenExpr()!=null){
@@ -274,7 +281,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitParenExpr(LTLGrammarParser.ParenExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitParenExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitParenExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitParenExpr(ctx));
             return name;
         }
         if(ctx.variable()!=null){
@@ -288,7 +295,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitIntLitExpr(LTLGrammarParser.IntLitExprContext ctx) {
         if(!LTLExprVisitor.getInstance().visitIntLitExpr(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitIntLitExpr(ctx));
+            unsafePut(name,apGeneratorVisitor.visitIntLitExpr(ctx));
             return name;
         }
         return ctx.value.getText();
@@ -298,7 +305,7 @@ public class ToStringVisitor extends LTLGrammarBaseVisitor<String> {
     public String visitVariable(LTLGrammarParser.VariableContext ctx) {
         if(!LTLExprVisitor.getInstance().visitVariable(ctx)) {
             String name=generateApName();
-            aps.put(name,apGeneratorVisitor.visitVariable(ctx));
+            unsafePut(name,apGeneratorVisitor.visitVariable(ctx));
             return name;
         }
         return ctx.name.getText();

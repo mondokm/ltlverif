@@ -6,7 +6,10 @@ import hu.bme.mit.theta.analysis.expr.ExprState;
 
 public class InfTrace {
 
+	// trace contains the cycle's start, so trace[cycleStart] == trace.last() ?
     private Trace<ExprState, ExprAction> trace;
+    // can be -1 (if no cycle?)
+    private int cycleStart;
 
     private InfTrace(Trace<ExprState, ExprAction> trace, int cycleStart) {
         this.trace = trace;
@@ -25,13 +28,11 @@ public class InfTrace {
         this.cycleStart = cycleStart;
     }
 
-    private int cycleStart;
-
-    public Trace getTrace() {
+    public Trace<ExprState, ExprAction> getTrace() {
         return trace;
     }
 
-    public void setTrace(Trace trace) {
+    public void setTrace(Trace<ExprState, ExprAction> trace) {
         this.trace = trace;
     }
 }

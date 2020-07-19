@@ -1,0 +1,25 @@
+main process cfa {
+	var x : int
+	var y : int
+	var b : bool
+
+	loc L0
+	init loc IL1
+	IL1 -> L0 { err := false }
+    loc L1
+    loc L2
+    loc L3
+    loc L4
+    final loc END
+    loc ERR
+	var err : bool
+    error loc ERR1
+    ERR -> ERR1 { err := true }
+
+	L0 -> L1 { x:=1 y:=0 }
+	L1 -> L2 { havoc b }
+    L2 -> L3 { assume ((y < 1000) and (b = true)) }
+    L3 -> L4 { x := x + y }
+    L4 -> L1 { y := y + 1 }
+    L2 -> END { assume not ((y < 1000) and (b = true)) }
+}

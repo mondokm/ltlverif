@@ -24,6 +24,6 @@ public class CfaSUT implements SUT {
 
     @Override
     public boolean isFinalState(ProductState prod) {
-        return ((CfaProductState)prod).getLoc().equals(cfa.getFinalLoc()) /*|| ((CfaProductState)prod).getLoc().equals(cfa.getErrorLoc())*/;
+        return ((CfaProductState)prod).getLoc().equals(cfa.getFinalLoc()) || ((CfaProductState)prod).getLoc().equals(cfa.getErrorLoc());
     }
 }
