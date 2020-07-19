@@ -4,6 +4,13 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.HashMap;
 
+/** Returns whether an AST element represents an LTL expression that has no temporal operators.
+ *  We need to convert all these into atomic propositions that Spot can interpret.
+ *  So in the AST, the F G(not err), the largest expression (not err) will be converted to atomic proposition ap0.
+ *  The resulting LTL expression, which now Spot can interpret, is F G ap0.
+ *  Whether there is an LTL expression, is returned by LTLExprVisitor.
+ *  The link is stored in APGeneratorVisitor's result.
+ */
 public class LTLExprVisitor extends LTLGrammarBaseVisitor<Boolean> {
 
     private static LTLExprVisitor instance=new LTLExprVisitor();
